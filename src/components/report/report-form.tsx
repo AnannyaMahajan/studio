@@ -30,6 +30,7 @@ import {
   TestTube2,
   Zap,
   Activity,
+  FileQuestion,
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { RiskScoreDisplay } from './risk-score-display';
