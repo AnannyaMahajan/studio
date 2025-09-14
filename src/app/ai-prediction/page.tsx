@@ -1,17 +1,21 @@
+
+'use client';
 import { PredictionHistory } from '@/components/ai-prediction/prediction-history';
+import { useTranslation } from '@/hooks/use-translation';
 import { Sparkles } from 'lucide-react';
 
 export default function AIPredictionPage() {
+  const { t } = useTranslation();
   return (
-    <div className="flex flex-col gap-8 p-4 md:p-8">
+    <div className="flex flex-col gap-8">
       <header className="flex items-center gap-4">
         <Sparkles className="size-8 text-primary" />
         <div>
           <h1 className="font-headline text-3xl font-bold tracking-tight">
-            AI Prediction Center
+            {t('aiPrediction.title')}
           </h1>
           <p className="text-muted-foreground">
-            Review historical risk assessments and predictions.
+            {t('aiPrediction.description')}
           </p>
         </div>
       </header>

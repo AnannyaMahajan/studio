@@ -1,18 +1,21 @@
+
 'use client';
 import { ReportForm } from '@/components/report/report-form';
+import { useTranslation } from '@/hooks/use-translation';
 import { FileQuestion } from 'lucide-react';
 
 export default function ReportPage() {
+  const { t } = useTranslation();
   return (
-    <div className="flex flex-col gap-8 p-4 md:p-8">
+    <div className="flex flex-col gap-8">
       <header className="flex items-center gap-4">
         <FileQuestion className="size-8 text-primary" />
         <div>
           <h1 className="font-headline text-3xl font-bold tracking-tight">
-            New Health Report
+            {t('report.title')}
           </h1>
           <p className="text-muted-foreground">
-            Submit a new report for AI-powered risk analysis.
+            {t('report.description')}
           </p>
         </div>
       </header>

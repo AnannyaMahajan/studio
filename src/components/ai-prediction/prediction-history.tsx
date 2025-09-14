@@ -1,3 +1,4 @@
+
 'use client';
 import * as React from 'react';
 import {
@@ -13,6 +14,7 @@ import { predictionHistory } from '@/lib/placeholder-data';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '../ui/button';
 import { PredictionDetailsDialog } from './prediction-details-dialog';
+import { useTranslation } from '@/hooks/use-translation';
 
 const riskBadgeVariant: {
   [key in Prediction['riskScore']]: 'destructive' | 'secondary' | 'outline';
@@ -23,6 +25,7 @@ const riskBadgeVariant: {
 };
 
 export function PredictionHistory() {
+  const { t } = useTranslation();
   const [selectedPrediction, setSelectedPrediction] =
     React.useState<Prediction | null>(null);
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
@@ -43,10 +46,10 @@ export function PredictionHistory() {
         <CardHeader>
           <div className="flex items-center gap-2">
             <History className="size-5" />
-            <CardTitle>Prediction Log</CardTitle>
+            <CardTitle>{t('predictionHistory.title')}</CardTitle>
           </div>
           <CardDescription>
-            A log of the most recent reports and their AI-generated risk scores.
+            {t('predictionHistory.description')}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -65,7 +68,7 @@ export function PredictionHistory() {
                     variant={riskBadgeVariant[prediction.riskScore]}
                     className="capitalize"
                   >
-                    {prediction.riskScore} Risk
+                    {t(`predictionHistory.risk.${prediction.riskScore.toLowerCase()}`)} {t('risk')}
                   </Badge>
                 </div>
                 <p className="text-sm text-muted-foreground">
@@ -81,7 +84,7 @@ export function PredictionHistory() {
                     className="h-auto p-0"
                     onClick={() => handleViewDetails(prediction)}
                   >
-                    View Details
+                    {t('predictionHistory.viewDetails')}
                   </Button>
                 </div>
               </div>

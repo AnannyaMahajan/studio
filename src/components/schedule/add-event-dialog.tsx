@@ -1,3 +1,4 @@
+
 'use client';
 import { useState } from 'react';
 import {
@@ -13,6 +14,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import type { CalendarEvent } from '@/lib/types';
 import { useToast } from '@/hooks/use-toast';
+import { useTranslation } from '@/hooks/use-translation';
 
 interface AddEventDialogProps {
   isOpen: boolean;
@@ -25,6 +27,7 @@ export function AddEventDialog({
   onClose,
   onAddEvent,
 }: AddEventDialogProps) {
+  const { t } = useTranslation();
   const [title, setTitle] = useState('');
   const [time, setTime] = useState('');
   const { toast } = useToast();
@@ -33,16 +36,16 @@ export function AddEventDialog({
     if (title && time) {
       onAddEvent({ title, time });
       toast({
-        title: 'Event Added',
-        description: `"${title}" has been added to your schedule.`,
+        title: t('addEventDialog.toast.successTitle'),
+        description: t('addEventDialog.toast.successDescription', { title }),
       });
       setTitle('');
       setTime('');
       onClose();
     } else {
         toast({
-            title: 'Missing Information',
-            description: 'Please fill out both title and time for the event.',
+            title: t('addEventDialog.toast.errorTitle'),
+            description: t('addEventDialog.toast.errorDescription'),
             variant: 'destructive'
         })
     }
@@ -52,15 +55,15 @@ export function AddEventDialog({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Add New Event</DialogTitle>
+          <DialogTitle>{t('addEventDialog.title')}</DialogTitle>
           <DialogDescription>
-            Enter the details for your new schedule item.
+            {t('addEventDialog.description')}
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="title" className="text-right">
-              Title
+              {t('addEventDialog.titleLabel')}
             </Label>
             <Input
               id="title"
@@ -71,20 +74,20 @@ export function AddEventDialog({
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="time" className="text-right">
-              Time
+              {t('addEventDialog.timeLabel')}
             </Label>
             <Input
               id="time"
               value={time}
               onChange={(e) => setTime(e.target.value)}
-              placeholder="e.g., 10:00 AM or All Day"
+              placeholder={t('addEventDialog.timePlaceholder')}
               className="col-span-3"
             />
           </div>
         </div>
         <DialogFooter>
-          <Button variant="outline" onClick={onClose}>Cancel</Button>
-          <Button onClick={handleSubmit}>Add Event</Button>
+          <Button variant="outline" onClick={onClose}>{t('addEventDialog.cancelButton')}</Button>
+          <Button onClick={handleSubmit}>{t('addEventDialog.addButton')}</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

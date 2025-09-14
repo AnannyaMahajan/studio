@@ -1,3 +1,4 @@
+
 'use client';
 import {
   Card,
@@ -18,84 +19,87 @@ import { Badge } from '@/components/ui/badge';
 import { Bar, BarChart, CartesianGrid, XAxis, Tooltip } from 'recharts';
 import { ChartContainer, ChartTooltipContent } from '@/components/ui/chart';
 import { TestTube2, Activity, Thermometer, Zap } from 'lucide-react';
-
-const waterQualityData = [
-  {
-    location: 'Sector 7 - Well',
-    turbidity: 45,
-    pH: 6.8,
-    bacteria: 'High',
-    conductivity: 550,
-    status: 'Poor',
-  },
-  {
-    location: 'North Village River',
-    turbidity: 12,
-    pH: 7.1,
-    bacteria: 'Low',
-    conductivity: 320,
-    status: 'Good',
-  },
-  {
-    location: 'Community Pump',
-    turbidity: 25,
-    pH: 6.9,
-    bacteria: 'Medium',
-    conductivity: 410,
-    status: 'Average',
-  },
-  {
-    location: 'East Sector Borehole',
-    turbidity: 5,
-    pH: 7.5,
-    bacteria: 'None',
-    conductivity: 250,
-    status: 'Excellent',
-  },
-];
-
-const chartData = waterQualityData.map(item => ({
-    name: item.location.split(' - ')[0],
-    turbidity: item.turbidity
-}));
-
-
-const chartConfig = {
-  turbidity: {
-    label: 'Turbidity (NTU)',
-    color: 'hsl(var(--primary))',
-  },
-};
-
-const statusVariant: { [key: string]: 'destructive' | 'secondary' | 'outline' } = {
-    Poor: 'destructive',
-    Average: 'secondary',
-    Good: 'outline',
-    Excellent: 'outline',
-};
+import { useTranslation } from '@/hooks/use-translation';
 
 export function WaterQualityDashboard() {
+  const { t } = useTranslation();
+
+  const waterQualityData = [
+    {
+      location: t('waterQuality.data.1.location'),
+      turbidity: 45,
+      pH: 6.8,
+      bacteria: t('waterQuality.data.bacteria.high'),
+      conductivity: 550,
+      status: t('waterQuality.data.status.poor'),
+    },
+    {
+      location: t('waterQuality.data.2.location'),
+      turbidity: 12,
+      pH: 7.1,
+      bacteria: t('waterQuality.data.bacteria.low'),
+      conductivity: 320,
+      status: t('waterQuality.data.status.good'),
+    },
+    {
+      location: t('waterQuality.data.3.location'),
+      turbidity: 25,
+      pH: 6.9,
+      bacteria: t('waterQuality.data.bacteria.medium'),
+      conductivity: 410,
+      status: t('waterQuality.data.status.average'),
+    },
+    {
+      location: t('waterQuality.data.4.location'),
+      turbidity: 5,
+      pH: 7.5,
+      bacteria: t('waterQuality.data.bacteria.none'),
+      conductivity: 250,
+      status: t('waterQuality.data.status.excellent'),
+    },
+  ];
+
+  const chartData = waterQualityData.map(item => ({
+      name: item.location.split(' - ')[0],
+      turbidity: item.turbidity
+  }));
+
+
+  const chartConfig = {
+    turbidity: {
+      label: t('waterQuality.chart.label'),
+      color: 'hsl(var(--primary))',
+    },
+  };
+
+  const statusVariant: { [key: string]: 'destructive' | 'secondary' | 'outline' } = {
+      [t('waterQuality.data.status.poor')]: 'destructive',
+      [t('waterQuality.data.status.average')]: 'secondary',
+      [t('waterQuality.data.status.good')]: 'outline',
+      [t('waterQuality.data.status.excellent')]: 'outline',
+  };
+
   return (
     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-1">
       <Card>
         <CardHeader>
           <div className="flex items-center gap-2">
             <TestTube2 className="size-5" />
-            <CardTitle>Recent Sample Results</CardTitle>
+            <CardTitle>{t('waterQuality.table.title')}</CardTitle>
           </div>
           <CardDescription>
-            Overview of the latest water quality tests.
+            {t('waterQuality.table.description')}
           </CardDescription>
         </CardHeader>
         <CardContent>
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Location</TableHead>
-                <TableHead className="text-center">Turbidity (NTU)</TableHead>
-                <TableHead className="text-center">pH</TableHead>
-                <TableHead>Bacteria</TableHead>
-                <TableHead className="text-right">Status</TableHead>
+                <TableHead>{t('waterQuality.table.headers.location')}</TableHead>
+                <TableHead className="text-center">{t('waterQuality.table.headers.turbidity')}</TableHead>
+                <TableHead className="text-center">{t('waterQuality.table.headers.ph')}</TableHead>
+                <TableHead>{t('waterQuality.table.headers.bacteria')}</TableHead>
+                <TableHead className="text-right">{t('waterQuality.table.headers.status')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -121,10 +125,10 @@ export function WaterQualityDashboard() {
             <CardHeader>
                 <div className="flex items-center gap-2">
                     <Activity className="size-5" />
-                    <CardTitle>Turbidity Levels by Location</CardTitle>
+                    <CardTitle>{t('waterQuality.chart.title')}</CardTitle>
                 </div>
                 <CardDescription>
-                    Higher turbidity can indicate a higher risk of contaminants.
+                    {t('waterQuality.chart.description')}
                 </CardDescription>
             </CardHeader>
             <CardContent>

@@ -1,3 +1,4 @@
+
 'use client';
 import { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
@@ -15,17 +16,19 @@ import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2, LocateFixed } from 'lucide-react';
 import { RiskScoreDisplay } from './risk-score-display';
+import { useTranslation } from '@/hooks/use-translation';
 
 const symptoms = [
-  { id: 'diarrhea', label: 'Diarrhea' },
-  { id: 'vomiting', label: 'Vomiting' },
-  { id: 'fever', label: 'Fever' },
-  { id: 'stomach_cramps', label: 'Stomach Cramps' },
-  { id: 'dehydration', label: 'Dehydration' },
-  { id: 'skin_rash', label: 'Skin Rash' },
+  { id: 'diarrhea', labelKey: 'report.symptoms.diarrhea' },
+  { id: 'vomiting', labelKey: 'report.symptoms.vomiting' },
+  { id: 'fever', labelKey: 'report.symptoms.fever' },
+  { id: 'stomach_cramps', labelKey: 'report.symptoms.stomach_cramps' },
+  { id: 'dehydration', labelKey: 'report.symptoms.dehydration' },
+  { id: 'skin_rash', labelKey: 'report.symptoms.skin_rash' },
 ];
 
 export function ReportForm() {
+  const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
   const [analysisResult, setAnalysisResult] = useState<RiskScoreAndExplainabilityOutput | null>(null);
   const { toast } = useToast();
@@ -60,23 +63,23 @@ export function ReportForm() {
           const { latitude, longitude } = position.coords;
           setValue('gpsCoordinates', `${latitude.toFixed(6)}, ${longitude.toFixed(6)}`, { shouldValidate: true });
           toast({
-            title: 'Location Captured',
-            description: 'GPS coordinates have been successfully updated.',
+            title: t('report.toast.locationSuccessTitle'),
+            description: t('report.toast.locationSuccessDescription'),
           });
         },
         (error) => {
           console.error('Error getting location:', error.message);
           toast({
-            title: 'Error getting location',
-            description: 'Please ensure location services are enabled.',
+            title: t('report.toast.locationErrorTitle'),
+            description: t('report.toast.locationErrorDescription'),
             variant: 'destructive',
           });
         }
       );
     } else {
       toast({
-        title: 'Geolocation not supported',
-        description: 'Your browser does not support geolocation.',
+        title: t('report.toast.locationNotSupportedTitle'),
+        description: t('report.toast.locationNotSupportedDescription'),
         variant: 'destructive',
       });
     }
@@ -99,7 +102,6 @@ export function ReportForm() {
 
     const inputData = {
         ...data,
-        // Ensure photoUpload is a string, even if empty. The flow requires it.
         photoUpload: data.photoUpload || 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=',
     };
 
@@ -108,14 +110,14 @@ export function ReportForm() {
       if (result) {
         setAnalysisResult(result);
         toast({
-          title: 'Analysis Complete',
-          description: 'Risk score and action plan generated successfully.',
+          title: t('report.toast.analysisSuccessTitle'),
+          description: t('report.toast.analysisSuccessDescription'),
         });
       }
     } catch (error) {
       toast({
-        title: 'Analysis Failed',
-        description: 'An error occurred while analyzing the report. Please try again.',
+        title: t('report.toast.analysisErrorTitle'),
+        description: t('report.toast.analysisErrorDescription'),
         variant: 'destructive',
       });
       console.error(error);
@@ -129,15 +131,15 @@ export function ReportForm() {
       {!analysisResult ? (
         <Card>
           <CardHeader>
-            <CardTitle>Submit Health Report</CardTitle>
+            <CardTitle>{t('report.form.title')}</CardTitle>
             <CardDescription>
-              Fill in the details below to the best of your ability.
+              {t('report.form.description')}
             </CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
               <div className="space-y-2">
-                <Label>1. Observed Symptoms</Label>
+                <Label>{t('report.form.symptomsLabel')}</Label>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4 rounded-lg border p-4">
                   {symptoms.map((symptom) => (
                     <div key={symptom.id} className="flex items-center gap-2">
@@ -160,7 +162,7 @@ export function ReportForm() {
                           />
                         )}
                       />
-                      <Label htmlFor={symptom.id} className="font-normal">{symptom.label}</Label>
+                      <Label htmlFor={symptom.id} className="font-normal">{t(symptom.labelKey)}</Label>
                     </div>
                   ))}
                 </div>
@@ -168,57 +170,57 @@ export function ReportForm() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="caseCounts">2. Number of Cases</Label>
-                <Input id="caseCounts" type="number" {...register('caseCounts', { valueAsNumber: true, onChange: (e) => e.target.value = e.target.value || 0 })} placeholder="e.g., 5" />
+                <Label htmlFor="caseCounts">{t('report.form.caseCountsLabel')}</Label>
+                <Input id="caseCounts" type="number" {...register('caseCounts', { valueAsNumber: true })} placeholder={t('report.form.caseCountsPlaceholder')} />
                  {errors.caseCounts && <p className="text-sm text-destructive">{errors.caseCounts.message}</p>}
               </div>
 
                <div className="space-y-2">
-                <Label htmlFor="gpsCoordinates">3. GPS Coordinates</Label>
+                <Label htmlFor="gpsCoordinates">{t('report.form.gpsLabel')}</Label>
                 <div className="flex gap-2">
-                    <Input id="gpsCoordinates" {...register('gpsCoordinates')} placeholder="e.g., 22.5726, 88.3639" />
+                    <Input id="gpsCoordinates" {...register('gpsCoordinates')} placeholder={t('report.form.gpsPlaceholder')} />
                     <Button type="button" variant="outline" onClick={handleGetLocation}><LocateFixed/></Button>
                 </div>
                  {errors.gpsCoordinates && <p className="text-sm text-destructive">{errors.gpsCoordinates.message}</p>}
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="waterSampleDetails">4. Water Sample Details</Label>
-                <Textarea id="waterSampleDetails" {...register('waterSampleDetails')} placeholder="Describe the water source, color, smell, etc." />
+                <Label htmlFor="waterSampleDetails">{t('report.form.waterDetailsLabel')}</Label>
+                <Textarea id="waterSampleDetails" {...register('waterSampleDetails')} placeholder={t('report.form.waterDetailsPlaceholder')} />
                 {errors.waterSampleDetails && <p className="text-sm text-destructive">{errors.waterSampleDetails.message}</p>}
               </div>
               
               <div className="grid md:grid-cols-2 gap-6">
                  <div className="space-y-2">
-                    <Label htmlFor="turbidity">5. Turbidity (NTU)</Label>
-                    <Input id="turbidity" type="number" {...register('turbidity', { valueAsNumber: true, onChange: (e) => e.target.value = e.target.value || 0 })} placeholder="e.g., 45" />
+                    <Label htmlFor="turbidity">{t('report.form.turbidityLabel')}</Label>
+                    <Input id="turbidity" type="number" {...register('turbidity', { valueAsNumber: true })} placeholder={t('report.form.turbidityPlaceholder')} />
                     {errors.turbidity && <p className="text-sm text-destructive">{errors.turbidity.message}</p>}
                 </div>
                  <div className="space-y-2">
-                    <Label htmlFor="pH">6. pH Level</Label>
-                    <Input id="pH" type="number" step="0.1" {...register('pH', { valueAsNumber: true, onChange: (e) => e.target.value = e.target.value || 0 })} placeholder="e.g., 6.8" />
+                    <Label htmlFor="pH">{t('report.form.phLabel')}</Label>
+                    <Input id="pH" type="number" step="0.1" {...register('pH', { valueAsNumber: true })} placeholder={t('report.form.phPlaceholder')} />
                     {errors.pH && <p className="text-sm text-destructive">{errors.pH.message}</p>}
                 </div>
                  <div className="space-y-2">
-                    <Label htmlFor="bacterialIndicators">7. Bacterial Indicators</Label>
-                    <Input id="bacterialIndicators" {...register('bacterialIndicators')} placeholder="e.g., E. coli detected" />
+                    <Label htmlFor="bacterialIndicators">{t('report.form.bacteriaLabel')}</Label>
+                    <Input id="bacterialIndicators" {...register('bacterialIndicators')} placeholder={t('report.form.bacteriaPlaceholder')} />
                     {errors.bacterialIndicators && <p className="text-sm text-destructive">{errors.bacterialIndicators.message}</p>}
                 </div>
                  <div className="space-y-2">
-                    <Label htmlFor="conductivity">8. Conductivity (µS/cm)</Label>
-                    <Input id="conductivity" type="number" {...register('conductivity', { valueAsNumber: true, onChange: (e) => e.target.value = e.target.value || 0 })} placeholder="e.g., 550" />
+                    <Label htmlFor="conductivity">{t('report.form.conductivityLabel')}</Label>
+                    <Input id="conductivity" type="number" {...register('conductivity', { valueAsNumber: true })} placeholder={t('report.form.conductivityPlaceholder')} />
                     {errors.conductivity && <p className="text-sm text-destructive">{errors.conductivity.message}</p>}
                 </div>
               </div>
 
                <div className="space-y-2">
-                    <Label htmlFor="photoUpload">9. Upload Photo (Optional)</Label>
+                    <Label htmlFor="photoUpload">{t('report.form.photoLabel')}</Label>
                     <Input id="photoUpload" type="file" accept="image/*" onChange={handleFileChange} />
                 </div>
 
               <Button type="submit" disabled={isLoading} className="w-full">
                 {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-                {isLoading ? 'Analyzing...' : 'Generate Risk Score'}
+                {isLoading ? t('report.form.analyzingButton') : t('report.form.submitButton')}
               </Button>
             </form>
           </CardContent>

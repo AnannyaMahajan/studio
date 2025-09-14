@@ -1,3 +1,4 @@
+
 'use client';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -13,20 +14,22 @@ import { Label } from '@/components/ui/label';
 import { WaterDropIcon } from '../icons';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
+import { useTranslation } from '@/hooks/use-translation';
 
 interface AuthFormProps {
   mode: 'login' | 'signup';
 }
 
 export function AuthForm({ mode }: AuthFormProps) {
+    const { t } = useTranslation();
     const { toast } = useToast();
     const router = useRouter();
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         toast({
-            title: mode === 'login' ? 'Login Successful' : 'Account Created',
-            description: mode === 'login' ? 'Welcome back!' : 'Your account has been successfully created.',
+            title: t(mode === 'login' ? 'auth.loginSuccessTitle' : 'auth.signupSuccessTitle'),
+            description: t(mode === 'login' ? 'auth.loginSuccessDescription' : 'auth.signupSuccessDescription'),
         });
         router.push('/');
     }
@@ -39,27 +42,27 @@ export function AuthForm({ mode }: AuthFormProps) {
                 <div className="bg-primary text-primary-foreground p-2 rounded-lg">
                     <WaterDropIcon className="size-6" />
                 </div>
-                <h1 className="font-headline text-2xl font-semibold">Swasthya Raksha</h1>
+                <h1 className="font-headline text-2xl font-semibold">{t('appName')}</h1>
           </div>
           <CardTitle className="text-2xl font-bold">
-            {mode === 'login' ? 'Login' : 'Sign Up'}
+            {t(mode === 'login' ? 'auth.loginTitle' : 'auth.signupTitle')}
           </CardTitle>
           <CardDescription>
-            {mode === 'login'
-              ? 'Enter your email below to login to your account'
-              : 'Enter your information to create an account'}
+            {t(mode === 'login'
+              ? 'auth.loginDescription'
+              : 'auth.signupDescription')}
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="grid gap-4">
             {mode === 'signup' && (
               <div className="grid gap-2">
-                <Label htmlFor="full-name">Full name</Label>
+                <Label htmlFor="full-name">{t('auth.fullNameLabel')}</Label>
                 <Input id="full-name" placeholder="Asha Kumari" required />
               </div>
             )}
             <div className="grid gap-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">{t('auth.emailLabel')}</Label>
               <Input
                 id="email"
                 type="email"
@@ -69,35 +72,35 @@ export function AuthForm({ mode }: AuthFormProps) {
             </div>
             <div className="grid gap-2">
                 <div className="flex items-center">
-                    <Label htmlFor="password">Password</Label>
+                    <Label htmlFor="password">{t('auth.passwordLabel')}</Label>
                     {mode === 'login' && (
                         <Link href="#" className="ml-auto inline-block text-sm underline">
-                            Forgot your password?
+                            {t('auth.forgotPassword')}
                         </Link>
                     )}
                 </div>
               <Input id="password" type="password" required />
             </div>
             <Button type="submit" className="w-full">
-              {mode === 'login' ? 'Login' : 'Create an account'}
+              {t(mode === 'login' ? 'auth.loginButton' : 'auth.signupButton')}
             </Button>
             <Button variant="outline" className="w-full">
-              {mode === 'login' ? 'Login with Google' : 'Sign up with Google'}
+              {t(mode === 'login' ? 'auth.loginWithGoogle' : 'auth.signupWithGoogle')}
             </Button>
           </form>
           <div className="mt-4 text-center text-sm">
             {mode === 'login' ? (
               <>
-                Don&apos;t have an account?{' '}
+                {t('auth.noAccount')}{' '}
                 <Link href="/signup" className="underline">
-                  Sign up
+                  {t('auth.signupLink')}
                 </Link>
               </>
             ) : (
               <>
-                Already have an account?{' '}
+                {t('auth.hasAccount')}{' '}
                 <Link href="/login" className="underline">
-                  Login
+                  {t('auth.loginLink')}
                 </Link>
               </>
             )}

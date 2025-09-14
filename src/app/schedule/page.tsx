@@ -1,5 +1,6 @@
+
 'use client';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Calendar } from '@/components/ui/calendar';
 import {
   Card,
@@ -18,31 +19,33 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { format } from 'date-fns';
-
-const initialEvents: CalendarEvent[] = [
-  {
-    date: new Date(new Date().setDate(new Date().getDate())),
-    title: 'Water Testing in Sector 4',
-    time: '10:00 AM - 11:00 AM',
-  },
-  {
-    date: new Date(new Date().setDate(new Date().getDate())),
-    title: 'Community Health Briefing',
-    time: '2:00 PM - 3:00 PM',
-  },
-  {
-    date: new Date(new Date().setDate(new Date().getDate())),
-    title: 'Meet with Village Elder',
-    time: '4:30 PM',
-  },
-  {
-    date: new Date(new Date().setDate(new Date().getDate() + 2)),
-    title: 'Follow-up on Sector 7 cases',
-    time: 'All Day',
-  },
-];
+import { useTranslation } from '@/hooks/use-translation';
 
 export default function SchedulePage() {
+  const { t } = useTranslation();
+  const initialEvents = useMemo<CalendarEvent[]>(() => [
+    {
+      date: new Date(new Date().setDate(new Date().getDate())),
+      title: t('schedule.events.1.title'),
+      time: '10:00 AM - 11:00 AM',
+    },
+    {
+      date: new Date(new Date().setDate(new Date().getDate())),
+      title: t('schedule.events.2.title'),
+      time: '2:00 PM - 3:00 PM',
+    },
+    {
+      date: new Date(new Date().setDate(new Date().getDate())),
+      title: t('schedule.events.3.title'),
+      time: '4:30 PM',
+    },
+    {
+      date: new Date(new Date().setDate(new Date().getDate() + 2)),
+      title: t('schedule.events.4.title'),
+      time: t('schedule.events.4.time'),
+    },
+  ], [t]);
+
   const [date, setDate] = useState<Date | undefined>(new Date());
   const [events, setEvents] = useState<CalendarEvent[]>(initialEvents);
   const [isAddEventDialogOpen, setIsAddEventDialogOpen] = useState(false);
@@ -60,22 +63,22 @@ export default function SchedulePage() {
   };
 
   return (
-    <div className="flex flex-col gap-8 p-4 md:p-8">
+    <div className="flex flex-col gap-8">
       <header className="flex items-center justify-between gap-4">
         <div className="flex items-center gap-4">
           <CalendarIcon className="size-8 text-primary" />
           <div>
             <h1 className="font-headline text-3xl font-bold tracking-tight">
-              My Schedule
+              {t('schedule.title')}
             </h1>
             <p className="text-muted-foreground">
-              Plan and view your upcoming tasks and appointments.
+              {t('schedule.description')}
             </p>
           </div>
         </div>
         <Button onClick={() => setIsAddEventDialogOpen(true)}>
           <Plus className="mr-2 h-4 w-4" />
-          New Event
+          {t('schedule.newEventButton')}
         </Button>
       </header>
 
@@ -116,7 +119,7 @@ export default function SchedulePage() {
                             <div className="grid gap-4">
                               <div className="space-y-2">
                                 <h4 className="font-medium leading-none">
-                                  Events for {format(props.date, 'PPP')}
+                                  {t('schedule.popoverTitle', { date: format(props.date, 'PPP')})}
                                 </h4>
                                 <div className="grid gap-2">
                                   {dayEvents.map((event, index) => (
@@ -143,10 +146,10 @@ export default function SchedulePage() {
           <Card>
             <CardHeader>
               <CardTitle>
-                {date ? format(date, 'PPP') : 'Upcoming Events'}
+                {date ? format(date, 'PPP') : t('schedule.upcomingEvents')}
               </CardTitle>
               <CardDescription>
-                Your schedule for the selected day.
+                {t('schedule.daySchedule')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -161,7 +164,7 @@ export default function SchedulePage() {
                 ))
               ) : (
                 <p className="text-sm text-muted-foreground">
-                  No events for this day.
+                  {t('schedule.noEvents')}
                 </p>
               )}
             </CardContent>

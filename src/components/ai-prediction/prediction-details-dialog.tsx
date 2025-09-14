@@ -1,3 +1,4 @@
+
 'use client';
 import type { Prediction } from '@/lib/types';
 import {
@@ -18,6 +19,7 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
 import { Card, CardContent, CardHeader } from '../ui/card';
+import { useTranslation } from '@/hooks/use-translation';
 
 interface PredictionDetailsDialogProps {
   prediction: Prediction | null;
@@ -25,35 +27,37 @@ interface PredictionDetailsDialogProps {
   onClose: () => void;
 }
 
-const riskLevelConfig = {
-  Low: {
-    badgeVariant: 'outline' as const,
-    icon: <CheckCircle className="h-8 w-8 text-green-500" />,
-    title: 'Low Risk',
-    bgColor: 'bg-green-50',
-    textColor: 'text-green-800',
-  },
-  Medium: {
-    badgeVariant: 'secondary' as const,
-    icon: <AlertTriangle className="h-8 w-8 text-yellow-500" />,
-    title: 'Medium Risk',
-    bgColor: 'bg-yellow-50',
-    textColor: 'text-yellow-800',
-  },
-  High: {
-    badgeVariant: 'destructive' as const,
-    icon: <ShieldAlert className="h-8 w-8 text-destructive" />,
-    title: 'High Risk',
-    bgColor: 'bg-red-50',
-    textColor: 'text-destructive',
-  },
-};
-
 export function PredictionDetailsDialog({
   prediction,
   isOpen,
   onClose,
 }: PredictionDetailsDialogProps) {
+  const { t } = useTranslation();
+  
+  const riskLevelConfig = {
+    Low: {
+      badgeVariant: 'outline' as const,
+      icon: <CheckCircle className="h-8 w-8 text-green-500" />,
+      title: t('predictionDialog.riskLevels.low'),
+      bgColor: 'bg-green-50',
+      textColor: 'text-green-800',
+    },
+    Medium: {
+      badgeVariant: 'secondary' as const,
+      icon: <AlertTriangle className="h-8 w-8 text-yellow-500" />,
+      title: t('predictionDialog.riskLevels.medium'),
+      bgColor: 'bg-yellow-50',
+      textColor: 'text-yellow-800',
+    },
+    High: {
+      badgeVariant: 'destructive' as const,
+      icon: <ShieldAlert className="h-8 w-8 text-destructive" />,
+      title: t('predictionDialog.riskLevels.high'),
+      bgColor: 'bg-red-50',
+      textColor: 'text-destructive',
+    },
+  };
+  
   if (!prediction) return null;
 
   const config =
@@ -64,10 +68,10 @@ export function PredictionDetailsDialog({
       <DialogContent className="sm:max-w-2xl">
         <DialogHeader>
           <DialogTitle className="text-2xl">
-            Prediction Details: {prediction.location}
+            {t('predictionDialog.title', { location: prediction.location })}
           </DialogTitle>
           <DialogDescription>
-            Analysis conducted on {prediction.date}.
+            {t('predictionDialog.description', { date: prediction.date })}
           </DialogDescription>
         </DialogHeader>
         <div className="py-4 space-y-6">
@@ -76,10 +80,10 @@ export function PredictionDetailsDialog({
               {config.icon}
               <div>
                 <h3 className={cn('text-xl font-bold', config.textColor)}>
-                  {config.title} Detected
+                  {config.title}
                 </h3>
                 <Badge variant={config.badgeVariant} className="text-md">
-                  {prediction.riskScore}
+                  {t(`predictionDialog.riskScores.${prediction.riskScore.toLowerCase()}`)}
                 </Badge>
               </div>
             </CardHeader>
@@ -88,7 +92,7 @@ export function PredictionDetailsDialog({
           <div>
             <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
               <ListChecks />
-              Top Contributing Factors
+              {t('predictionDialog.factorsTitle')}
             </h3>
             <ul className="space-y-2">
               {prediction.details.explainabilityFactors.map((factor, index) => (
@@ -108,7 +112,7 @@ export function PredictionDetailsDialog({
           <div>
             <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
               <ListTodo />
-              Recommended Action Plan
+              {t('predictionDialog.actionPlanTitle')}
             </h3>
             <ul className="space-y-2">
               {prediction.details.actionPlan.map((step, index) => (
