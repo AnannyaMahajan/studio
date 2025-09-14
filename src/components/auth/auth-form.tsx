@@ -139,13 +139,6 @@ export function AuthForm({ mode }: AuthFormProps) {
             <Button type="submit" className="w-full">
               {t(mode === 'login' ? 'auth.loginButton' : 'auth.signupButton')}
             </Button>
-            <Button variant="outline" className="w-full" type="button">
-              {t(
-                mode === 'login'
-                  ? 'auth.loginWithGoogle'
-                  : 'auth.signupWithGoogle'
-              )}
-            </Button>
           </form>
           <div className="mt-4 text-center text-sm">
             {mode === 'login' ? (
