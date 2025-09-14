@@ -11,6 +11,9 @@ export const metadata: Metadata = {
   title: 'Swasthya Raksha',
   description: 'Community Health Worker Reporting and Outbreak Prediction',
   manifest: '/manifest.json',
+  icons: {
+    icon: '/favicon.ico',
+  },
 };
 
 export const viewport: Viewport = {
