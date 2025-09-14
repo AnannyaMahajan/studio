@@ -1,3 +1,4 @@
+
 'use client';
 import * as React from 'react';
 import {
@@ -9,7 +10,6 @@ import {
 } from '@/components/ui/card';
 import { Bell, AlertTriangle, Info, Handshake } from 'lucide-react';
 import type { Alert } from '@/lib/types';
-import { alerts as initialAlertsData } from '@/lib/placeholder-data';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '../ui/button';
 import { useTranslation } from '@/hooks/use-translation';
@@ -23,7 +23,7 @@ const alertIcons: { [key in Alert['level']]: React.ReactNode } = {
 export function AlertsCenter({ isPage = false }: { isPage?: boolean }) {
   const { t } = useTranslation();
 
-  const initialAlerts = React.useMemo(() => [
+  const initialAlerts = React.useMemo<Alert[]>(() => [
     {
       id: 1,
       title: t('alerts.1.title'),
@@ -54,15 +54,18 @@ export function AlertsCenter({ isPage = false }: { isPage?: boolean }) {
   );
 
    React.useEffect(() => {
-    setAlerts(initialAlerts);
-  }, [initialAlerts]);
+    // This effect ensures that if the language changes, the alerts are re-initialized with the correct translations
+    // It assumes that alerts that were acknowledged should remain so.
+    const acknowledgedIds = new Set(acknowledgedAlerts.map(a => a.id));
+    setAlerts(initialAlerts.filter(alert => !acknowledgedIds.has(alert.id)));
+  }, [initialAlerts, acknowledgedAlerts]);
 
 
   const handleAcknowledge = (alertId: number) => {
     const alertToAcknowledge = alerts.find((alert) => alert.id === alertId);
     if (alertToAcknowledge) {
       setAlerts(alerts.filter((alert) => alert.id !== alertId));
-      setAcknowledgedAlerts((prev) => [...prev, alertToAcknowledge]);
+      setAcknowledgedAlerts((prev) => [alertToAcknowledge, ...prev]);
     }
   };
 
@@ -70,22 +73,22 @@ export function AlertsCenter({ isPage = false }: { isPage?: boolean }) {
 
   if (!isPage && alerts.length === 0) {
     return (
-      <Card>
-        <CardHeader>
-          <div className="flex items-center gap-2">
-            <Bell className="size-5" />
-            <CardTitle>{t('alertsCenter.title')}</CardTitle>
-          </div>
-        </CardHeader>
-        <CardContent>
-          <p className="text-sm text-muted-foreground">{t('alertsCenter.noActiveAlerts')}</p>
-        </CardContent>
-      </Card>
+        <Card>
+            <CardHeader>
+                <div className="flex items-center gap-2">
+                <Bell className="size-5" />
+                <CardTitle>{t('alertsCenter.title')}</CardTitle>
+                </div>
+            </CardHeader>
+            <CardContent>
+                <p className="text-sm text-muted-foreground">{t('alertsCenter.noActiveAlerts')}</p>
+            </CardContent>
+        </Card>
     );
   }
 
   return (
-    <>
+    <div className="space-y-6">
       <Card>
         <CardHeader>
           <div className="flex items-center gap-2">
@@ -177,6 +180,6 @@ export function AlertsCenter({ isPage = false }: { isPage?: boolean }) {
           </CardContent>
         </Card>
       )}
-    </>
+    </div>
   );
 }
