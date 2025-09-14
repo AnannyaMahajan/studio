@@ -11,7 +11,6 @@ import {
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { WaterDropIcon } from '../icons';
 import { useToast } from '@/hooks/use-toast';
 import { useTranslation } from '@/hooks/use-translation';
 import { findUserByEmail } from '@/lib/user-store';
@@ -45,14 +44,6 @@ export function ForgotPasswordForm() {
     <div className="flex items-center justify-center min-h-screen bg-muted/50">
       <Card className="mx-auto max-w-sm w-full">
         <CardHeader className="text-center">
-          <div className="flex justify-center items-center gap-2 mb-4">
-            <div className="bg-primary text-primary-foreground p-2 rounded-lg">
-              <WaterDropIcon className="size-6" />
-            </div>
-            <h1 className="font-headline text-2xl font-semibold">
-              {t('appName')}
-            </h1>
-          </div>
           <CardTitle className="text-2xl font-bold">
             {t('auth.forgotPasswordTitle')}
           </CardTitle>
