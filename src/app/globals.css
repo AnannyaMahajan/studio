@@ -86,8 +86,22 @@
 }
 
 @layer utilities {
+  @keyframes animated-gradient-pan {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
   .animated-gradient {
-    background-image: radial-gradient(circle at 1px 1px, hsl(var(--foreground) / 0.05) 1px, transparent 0);
-    background-size: 20px 20px;
+    background-size: 200% 200%;
+    background-image: radial-gradient(circle at 25% 25%, hsl(var(--primary) / 0.1), hsl(var(--background)) 40%),
+                      radial-gradient(circle at 75% 75%, hsl(var(--primary) / 0.1), hsl(var(--background)) 40%);
+    animation: animated-gradient-pan 20s ease infinite;
   }
 }
