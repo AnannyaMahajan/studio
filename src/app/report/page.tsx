@@ -1,21 +1,21 @@
-import { ReportForm } from '@/components/report/report-form';
-import { FileQuestion } from 'lucide-react';
+import { ChatReport } from '@/components/report/chat-report';
+import { MessageSquare } from 'lucide-react';
 
 export default function ReportPage() {
   return (
-    <div className="flex flex-col gap-8 p-4 md:p-8">
+    <div className="flex flex-col gap-8 p-4 md:p-8 h-[calc(100vh-4rem)]">
       <header className="flex items-center gap-4">
-        <FileQuestion className="size-8 text-primary" />
+        <MessageSquare className="size-8 text-primary" />
         <div>
           <h1 className="font-headline text-3xl font-bold tracking-tight">
-            CHW Quick Report
+            Conversational Report
           </h1>
           <p className="text-muted-foreground">
-            Submit a new report for potential outbreak analysis.
+            Chat with an AI assistant to file your report.
           </p>
         </div>
       </header>
-      <ReportForm />
+      <ChatReport />
     </div>
   );
 }
