@@ -1,6 +1,6 @@
 
 'use client';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { Calendar } from '@/components/ui/calendar';
 import {
   Card,
@@ -23,32 +23,40 @@ import { useTranslation } from '@/hooks/use-translation';
 
 export default function SchedulePage() {
   const { t } = useTranslation();
-  const initialEvents = useMemo<CalendarEvent[]>(() => [
-    {
-      date: new Date(new Date().setDate(new Date().getDate())),
-      title: t('schedule.events.1.title'),
-      time: '10:00 AM - 11:00 AM',
-    },
-    {
-      date: new Date(new Date().setDate(new Date().getDate())),
-      title: t('schedule.events.2.title'),
-      time: '2:00 PM - 3:00 PM',
-    },
-    {
-      date: new Date(new Date().setDate(new Date().getDate())),
-      title: t('schedule.events.3.title'),
-      time: '4:30 PM',
-    },
-    {
-      date: new Date(new Date().setDate(new Date().getDate() + 2)),
-      title: t('schedule.events.4.title'),
-      time: t('schedule.events.4.time'),
-    },
-  ], [t]);
 
-  const [date, setDate] = useState<Date | undefined>(new Date());
-  const [events, setEvents] = useState<CalendarEvent[]>(initialEvents);
+  const [date, setDate] = useState<Date | undefined>(undefined);
+  const [events, setEvents] = useState<CalendarEvent[]>([]);
   const [isAddEventDialogOpen, setIsAddEventDialogOpen] = useState(false);
+
+  useEffect(() => {
+    const today = new Date();
+    setDate(today);
+
+    const initialEvents: CalendarEvent[] = [
+      {
+        date: new Date(new Date().setDate(today.getDate())),
+        title: t('schedule.events.1.title'),
+        time: '10:00 AM - 11:00 AM',
+      },
+      {
+        date: new Date(new Date().setDate(today.getDate())),
+        title: t('schedule.events.2.title'),
+        time: '2:00 PM - 3:00 PM',
+      },
+      {
+        date: new Date(new Date().setDate(today.getDate())),
+        title: t('schedule.events.3.title'),
+        time: '4:30 PM',
+      },
+      {
+        date: new Date(new Date().setDate(today.getDate() + 2)),
+        title: t('schedule.events.4.title'),
+        time: t('schedule.events.4.time'),
+      },
+    ];
+    setEvents(initialEvents);
+  }, [t]);
+
 
   const selectedDayEvents = date
     ? events.filter(
