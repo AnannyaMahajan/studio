@@ -15,10 +15,12 @@ import {
   Calendar,
   Settings,
   Sparkles,
+  FileQuestion,
 } from 'lucide-react';
 
 const mainNavItems = [
   { href: '/', label: 'Dashboard', icon: <LayoutDashboard /> },
+  { href: '/report', label: 'New Report', icon: <FileQuestion /> },
   { href: '/report', label: 'AI Prediction', icon: <Sparkles /> },
   { href: '/alerts', label: 'Alerts', icon: <Bell /> },
   { href: '/education', label: 'Education', icon: <GraduationCap /> },
@@ -36,7 +38,7 @@ export function SidebarNav() {
     <SidebarMenu className="flex flex-col h-full p-2">
       <div className="flex-1">
         {mainNavItems.map((item) => (
-          <SidebarMenuItem key={item.href}>
+          <SidebarMenuItem key={item.href + item.label}>
             <SidebarMenuButton
               asChild
               isActive={pathname === item.href}
