@@ -19,12 +19,12 @@ import { RiskScoreDisplay } from './risk-score-display';
 import { useTranslation } from '@/hooks/use-translation';
 
 const symptoms = [
-  { id: 'diarrhea', labelKey: 'report.symptoms.diarrhea' },
-  { id: 'vomiting', labelKey: 'report.symptoms.vomiting' },
-  { id: 'fever', labelKey: 'report.symptoms.fever' },
-  { id: 'stomach_cramps', labelKey: 'report.symptoms.stomach_cramps' },
-  { id: 'dehydration', labelKey: 'report.symptoms.dehydration' },
-  { id: 'skin_rash', labelKey: 'report.symptoms.skin_rash' },
+  { id: 'diarrhea', labelKey: 'report.form.symptoms.diarrhea' },
+  { id: 'vomiting', labelKey: 'report.form.symptoms.vomiting' },
+  { id: 'fever', labelKey: 'report.form.symptoms.fever' },
+  { id: 'stomach_cramps', labelKey: 'report.form.symptoms.stomach_cramps' },
+  { id: 'dehydration', labelKey: 'report.form.symptoms.dehydration' },
+  { id: 'skin_rash', labelKey: 'report.form.symptoms.skin_rash' },
 ];
 
 export function ReportForm() {
