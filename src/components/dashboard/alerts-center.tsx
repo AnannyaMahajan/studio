@@ -12,6 +12,7 @@ import type { Alert } from '@/lib/types';
 import { alerts as initialAlerts } from '@/lib/placeholder-data';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '../ui/button';
+import { useTranslation } from '@/hooks/use-translation';
 
 const alertIcons: { [key in Alert['level']]: React.ReactNode } = {
   high: <AlertTriangle className="size-5 text-destructive" />,
@@ -20,6 +21,7 @@ const alertIcons: { [key in Alert['level']]: React.ReactNode } = {
 };
 
 export function AlertsCenter({ isPage = false }: { isPage?: boolean }) {
+  const { t } = useTranslation();
   const [alerts, setAlerts] = React.useState<Alert[]>(initialAlerts);
   const [acknowledgedAlerts, setAcknowledgedAlerts] = React.useState<Alert[]>(
     []
@@ -41,11 +43,11 @@ export function AlertsCenter({ isPage = false }: { isPage?: boolean }) {
             <CardHeader>
                 <div className="flex items-center gap-2">
                     <Bell className="size-5" />
-                    <CardTitle>Alerts Center</CardTitle>
+                    <CardTitle>{t('alertsCenter.title')}</CardTitle>
                 </div>
             </CardHeader>
             <CardContent>
-                <p className="text-sm text-muted-foreground">No active alerts.</p>
+                <p className="text-sm text-muted-foreground">{t('alertsCenter.noActiveAlerts')}</p>
             </CardContent>
         </Card>
     );
@@ -57,10 +59,10 @@ export function AlertsCenter({ isPage = false }: { isPage?: boolean }) {
         <CardHeader>
           <div className="flex items-center gap-2">
             <Bell className="size-5" />
-            <CardTitle>Alerts Center</CardTitle>
+            <CardTitle>{t('alertsCenter.title')}</CardTitle>
           </div>
           <CardDescription>
-            Recent alerts based on incoming data.
+            {t('alertsCenter.description')}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -73,7 +75,7 @@ export function AlertsCenter({ isPage = false }: { isPage?: boolean }) {
                 <div className="mt-1">{alertIcons[alert.level]}</div>
                 <div className="flex-1">
                   <div className="flex justify-between items-center">
-                    <p className="font-semibold">{alert.title}</p>
+                    <p className="font-semibold">{t(`alerts.${alert.id}.title`)}</p>
                     <Badge
                       variant={
                         alert.level === 'high'
@@ -84,11 +86,11 @@ export function AlertsCenter({ isPage = false }: { isPage?: boolean }) {
                       }
                       className="capitalize"
                     >
-                      {alert.level} Risk
+                      {t(`alerts.levels.${alert.level}`)} Risk
                     </Badge>
                   </div>
                   <p className="text-sm text-muted-foreground">
-                    {alert.description}
+                    {t(`alerts.${alert.id}.description`)}
                   </p>
                   <p className="text-xs text-muted-foreground mt-1">
                     {alert.time}
@@ -100,14 +102,14 @@ export function AlertsCenter({ isPage = false }: { isPage?: boolean }) {
                       className="h-auto p-0"
                       onClick={() => handleAcknowledge(alert.id)}
                     >
-                      Acknowledge
+                      {t('alertsCenter.acknowledge')}
                     </Button>
                   </div>
                 </div>
               </div>
             ))
           ) : (
-             <p className="text-sm text-muted-foreground text-center py-4">All alerts have been actioned.</p>
+             <p className="text-sm text-muted-foreground text-center py-4">{t('alertsCenter.allActioned')}</p>
           )}
         </CardContent>
       </Card>
@@ -117,23 +119,23 @@ export function AlertsCenter({ isPage = false }: { isPage?: boolean }) {
           <CardHeader>
             <div className="flex items-center gap-2">
               <Handshake className="size-5" />
-              <CardTitle>Acknowledgements</CardTitle>
+              <CardTitle>{t('acknowledgements.title')}</CardTitle>
             </div>
-            <CardDescription>Recently acknowledged alerts.</CardDescription>
+            <CardDescription>{t('acknowledgements.description')}</CardDescription>
           </CardHeader>
           <CardContent>
             {acknowledgedAlerts.length > 0 ? (
               <div className='space-y-2'>
                 {acknowledgedAlerts.map(alert => (
                     <div key={alert.id} className='text-sm p-2 bg-muted/50 rounded-md'>
-                        <p className='font-medium'>{alert.title}</p>
-                        <p className='text-xs text-muted-foreground'>Acknowledged just now</p>
+                        <p className='font-medium'>{t(`alerts.${alert.id}.title`)}</p>
+                        <p className='text-xs text-muted-foreground'>{t('acknowledgements.acknowledged')}</p>
                     </div>
                 ))}
               </div>
             ) : (
               <p className="text-sm text-muted-foreground">
-                No acknowledgements pending.
+                {t('acknowledgements.nonePending')}
               </p>
             )}
           </CardContent>

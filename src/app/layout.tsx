@@ -4,6 +4,7 @@ import { cn } from '@/lib/utils';
 import { Toaster } from '@/components/ui/toaster';
 import { AppLayout } from '@/components/layout/app-layout';
 import { AuthLayout } from '@/components/layout/auth-layout';
+import { TranslationProvider } from '@/hooks/use-translation';
 
 export const metadata: Metadata = {
   title: 'Swasthya Raksha',
@@ -29,10 +30,12 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&display=swap" rel="stylesheet" />
       </head>
       <body className={cn('font-body antialiased')}>
-        <AuthLayout>
-          <AppLayout>{children}</AppLayout>
-        </AuthLayout>
-        <Toaster />
+        <TranslationProvider>
+            <AuthLayout>
+            <AppLayout>{children}</AppLayout>
+            </AuthLayout>
+            <Toaster />
+        </TranslationProvider>
       </body>
     </html>
   );

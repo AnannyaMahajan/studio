@@ -9,8 +9,10 @@ import {
 import { Button } from '@/components/ui/button';
 import { MapPin, Layers, Filter } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { useTranslation } from '@/hooks/use-translation';
 
 export function MapPlaceholder() {
+  const { t } = useTranslation();
   const mapImage = PlaceHolderImages.find((img) => img.id === 'map-1');
 
   return (
@@ -18,18 +20,18 @@ export function MapPlaceholder() {
       <CardHeader>
         <div className="flex items-center gap-2">
           <MapPin className="size-5" />
-          <CardTitle>Health Hotspots</CardTitle>
+          <CardTitle>{t('map.title')}</CardTitle>
         </div>
         <div className="flex items-center justify-between">
           <CardDescription>
-            Interactive map showing risk areas and case locations.
+            {t('map.description')}
           </CardDescription>
           <div className="flex gap-2">
             <Button variant="outline" size="sm">
-              <Layers className="mr-2 h-4 w-4" /> Layers
+              <Layers className="mr-2 h-4 w-4" /> {t('map.layers')}
             </Button>
             <Button variant="outline" size="sm">
-              <Filter className="mr-2 h-4 w-4" /> Filter
+              <Filter className="mr-2 h-4 w-4" /> {t('map.filter')}
             </Button>
           </div>
         </div>
@@ -46,7 +48,7 @@ export function MapPlaceholder() {
             />
           ) : (
             <div className="w-full h-full bg-muted flex items-center justify-center">
-              <p className="text-muted-foreground">Map data is unavailable.</p>
+              <p className="text-muted-foreground">{t('map.unavailable')}</p>
             </div>
           )}
         </div>
