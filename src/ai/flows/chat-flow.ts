@@ -1,3 +1,4 @@
+
 'use server';
 /**
  * @fileOverview A simple conversational AI for answering user queries.
@@ -37,10 +38,10 @@ const chatPrompt = ai.definePrompt({
   prompt: `You are a helpful assistant for a Community Health Worker using the Swasthya Raksha app. Your primary goal is to answer questions about water-borne diseases, public health, and how to use the app. Keep your answers concise, clear, and easy to understand.
 
 {{#each history}}
-  {{#if (eq role 'user')}}
-    User: {{{content}}}
+  {{#if (this.role === 'user')}}
+    User: {{{this.content}}}
   {{else}}
-    AI: {{{content}}}
+    AI: {{{this.content}}}
   {{/if}}
 {{/each}}
 
