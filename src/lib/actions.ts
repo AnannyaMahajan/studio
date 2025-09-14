@@ -3,18 +3,13 @@
 import {
   generateRiskScoreAndExplainability,
   type RiskScoreAndExplainabilityInput,
+  type RiskScoreAndExplainabilityOutput,
 } from '@/ai/flows/generate-risk-score-and-explainability';
 import { reportFormSchema } from './schemas';
 
 export async function getRiskScore(
   input: RiskScoreAndExplainabilityInput
-): Promise<
-  | {
-      riskScore: 'Low' | 'Medium' | 'High';
-      explainabilityFactors: string[];
-    }
-  | undefined
-> {
+): Promise<RiskScoreAndExplainabilityOutput | undefined> {
   const validation = reportFormSchema.safeParse(input);
 
   if (!validation.success) {

@@ -1,8 +1,9 @@
 import type { RiskScoreAndExplainabilityOutput } from '@/ai/flows/generate-risk-score-and-explainability';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { CheckCircle, AlertTriangle, ShieldAlert, ListChecks } from 'lucide-react';
+import { CheckCircle, AlertTriangle, ShieldAlert, ListChecks, ListTodo } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Separator } from '../ui/separator';
 
 interface RiskScoreDisplayProps {
   result: RiskScoreAndExplainabilityOutput;
@@ -45,19 +46,38 @@ export function RiskScoreDisplay({ result }: RiskScoreDisplayProps) {
         </CardTitle>
         <Badge variant={config.badgeVariant} className="text-lg px-4 py-1">{result.riskScore}</Badge>
       </CardHeader>
-      <CardContent className="p-6">
-        <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-            <ListChecks/>
-            Top 3 Contributing Factors
-        </h3>
-        <ul className="space-y-2">
-          {result.explainabilityFactors.map((factor, index) => (
-            <li key={index} className="flex items-start gap-3 p-3 bg-muted/50 rounded-md">
-              <span className="font-bold text-primary">{index + 1}.</span>
-              <span className="text-sm text-foreground">{factor}</span>
-            </li>
-          ))}
-        </ul>
+      <CardContent className="p-6 space-y-6">
+        <div>
+            <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                <ListChecks/>
+                Top Contributing Factors
+            </h3>
+            <ul className="space-y-2">
+            {result.explainabilityFactors.map((factor, index) => (
+                <li key={index} className="flex items-start gap-3 p-3 bg-muted/50 rounded-md">
+                <span className="font-bold text-primary">{index + 1}.</span>
+                <span className="text-sm text-foreground">{factor}</span>
+                </li>
+            ))}
+            </ul>
+        </div>
+
+        <Separator />
+        
+        <div>
+            <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                <ListTodo/>
+                Recommended Action Plan
+            </h3>
+            <ul className="space-y-2">
+            {result.actionPlan.map((step, index) => (
+                <li key={index} className="flex items-start gap-3 p-3 bg-blue-50/50 rounded-md border border-blue-200">
+                 <div className="flex-shrink-0 h-6 w-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-xs mt-0.5">{index + 1}</div>
+                 <span className="text-sm text-foreground">{step}</span>
+                </li>
+            ))}
+            </ul>
+        </div>
       </CardContent>
     </Card>
   );

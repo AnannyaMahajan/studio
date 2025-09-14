@@ -1,9 +1,9 @@
 'use server';
 
 /**
- * @fileOverview Generates a risk score (Low/Medium/High) for potential outbreaks and provides the top 3 explainability factors.
+ * @fileOverview Generates a risk score (Low/Medium/High) for potential outbreaks, provides the top 3 explainability factors, and creates a tailored action plan.
  *
- * - generateRiskScoreAndExplainability - A function that generates the risk score and explainability factors.
+ * - generateRiskScoreAndExplainability - A function that generates the risk score, explainability factors, and action plan.
  * - RiskScoreAndExplainabilityInput - The input type for the generateRiskScoreAndExplainability function.
  * - RiskScoreAndExplainabilityOutput - The return type for the generateRiskScoreAndExplainability function.
  */
@@ -36,6 +36,11 @@ const RiskScoreAndExplainabilityOutputSchema = z.object({
   explainabilityFactors: z
     .array(z.string())
     .describe('Top 3 factors explaining the risk score.'),
+  actionPlan: z
+    .array(z.string())
+    .describe(
+      'A step-by-step action plan for the Community Health Worker based on the risk assessment.'
+    ),
 });
 
 export type RiskScoreAndExplainabilityOutput = z.infer<
@@ -52,7 +57,10 @@ const generateRiskScoreAndExplainabilityPrompt = ai.definePrompt({
   name: 'generateRiskScoreAndExplainabilityPrompt',
   input: {schema: RiskScoreAndExplainabilityInputSchema},
   output: {schema: RiskScoreAndExplainabilityOutputSchema},
-  prompt: `You are a data analyst specializing in predicting disease outbreaks. Based on the provided information, generate a risk score (Low, Medium, or High) for a potential outbreak and identify the top 3 factors that contribute to this risk score. The explainability factors must come directly from the input data.
+  prompt: `You are a public health expert aiding a Community Health Worker (CHW) in a remote area. Based on the provided information, your task is to:
+1. Generate a risk score (Low, Medium, or High) for a potential water-borne disease outbreak.
+2. Identify the top 3 factors from the input data that contribute to this risk score.
+3. Create a clear, concise, and actionable step-by-step plan for the CHW. The plan should be tailored to the specific risk level and contributing factors.
 
 Input Data:
 Symptom Checklist: {{{symptomChecklist}}}
@@ -65,10 +73,11 @@ pH: {{{pH}}}
 Bacterial Indicators: {{{bacterialIndicators}}}
 Conductivity: {{{conductivity}}}
 
-Provide the risk score and top 3 explainability factors in the following format:
+Provide the risk score, top 3 explainability factors, and the action plan in the following format:
 {
   "riskScore": "[Low/Medium/High]",
-  "explainabilityFactors": ["factor1", "factor2", "factor3"]
+  "explainabilityFactors": ["factor1", "factor2", "factor3"],
+  "actionPlan": ["Step 1: ...", "Step 2: ...", "Step 3: ..."]
 }
 `,
 });
