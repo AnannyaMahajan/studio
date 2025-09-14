@@ -1,3 +1,4 @@
+
 'use client';
 import * as React from 'react';
 import { useForm } from 'react-hook-form';
@@ -213,7 +214,7 @@ export function ReportForm() {
                   <FormItem>
                     <FormLabel>Case Counts</FormLabel>
                     <FormControl>
-                      <Input type="number" placeholder="Enter number of cases" {...field} onChange={e => field.onChange(parseInt(e.target.value, 10))}/>
+                      <Input type="number" placeholder="Enter number of cases" {...field} onChange={e => field.onChange(parseInt(e.target.value, 10) || 0)}/>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -264,17 +265,17 @@ export function ReportForm() {
                   )}/>
                   <div className="grid grid-cols-2 gap-4">
                   <FormField control={form.control} name="turbidity" render={({ field }) => (
-                      <FormItem><FormLabel className="flex items-center gap-1"><Activity/>Turbidity</FormLabel><FormControl><Input type="number" {...field} onChange={e => field.onChange(parseFloat(e.target.value))} /></FormControl><FormMessage /></FormItem>
+                      <FormItem><FormLabel className="flex items-center gap-1"><Activity/>Turbidity</FormLabel><FormControl><Input type="number" {...field} onChange={e => field.onChange(parseFloat(e.target.value) || 0)} /></FormControl><FormMessage /></FormItem>
                   )}/>
                   <FormField control={form.control} name="pH" render={({ field }) => (
-                      <FormItem><FormLabel className="flex items-center gap-1"><Thermometer/>pH</FormLabel><FormControl><Input type="number" step="0.1" {...field} onChange={e => field.onChange(parseFloat(e.target.value))} /></FormControl><FormMessage /></FormItem>
+                      <FormItem><FormLabel className="flex items-center gap-1"><Thermometer/>pH</FormLabel><FormControl><Input type="number" step="0.1" {...field} onChange={e => field.onChange(parseFloat(e.target.value) || 0)} /></FormControl><FormMessage /></FormItem>
                   )}/>
                   </div>
                   <FormField control={form.control} name="bacterialIndicators" render={({ field }) => (
                       <FormItem><FormLabel className="flex items-center gap-1"><TestTube2/>Bacterial Indicators</FormLabel><FormControl><Input placeholder="e.g., E. coli, Coliform" {...field} /></FormControl><FormMessage /></FormItem>
                   )}/>
                   <FormField control={form.control} name="conductivity" render={({ field }) => (
-                      <FormItem><FormLabel className="flex items-center gap-1"><Zap/>Conductivity</FormLabel><FormControl><Input type="number" {...field} onChange={e => field.onChange(parseFloat(e.target.value))} /></FormControl><FormMessage /></FormItem>
+                      <FormItem><FormLabel className="flex items-center gap-1"><Zap/>Conductivity</FormLabel><FormControl><Input type="number" {...field} onChange={e => field.onChange(parseFloat(e.target.value) || 0)} /></FormControl><FormMessage /></FormItem>
                   )}/>
                 </CardContent>
               </Card>
