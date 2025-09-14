@@ -60,6 +60,29 @@ export function AlertsCenter({ isPage = false }: { isPage?: boolean }) {
     setAlerts(initialAlerts.filter(alert => !acknowledgedIds.has(alert.id)));
   }, [initialAlerts, acknowledgedAlerts]);
 
+  // Simulate a new real-time alert
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+        const newAlert: Alert = {
+            id: 4,
+            title: 'New High-Risk Prediction',
+            description: 'AI model predicted a high-risk score for the Eastern Pump Station.',
+            level: 'high',
+            time: 'Just now',
+        };
+
+        // Add the new alert only if it doesn't already exist
+        setAlerts((currentAlerts) => {
+            if (currentAlerts.some(alert => alert.id === newAlert.id)) {
+                return currentAlerts;
+            }
+            return [newAlert, ...currentAlerts];
+        });
+    }, 5000); // Add a new alert after 5 seconds
+
+    return () => clearTimeout(timer); // Cleanup timer on component unmount
+  }, []);
+
 
   const handleAcknowledge = (alertId: number) => {
     const alertToAcknowledge = alerts.find((alert) => alert.id === alertId);
@@ -104,7 +127,7 @@ export function AlertsCenter({ isPage = false }: { isPage?: boolean }) {
             displayedAlerts.map((alert) => (
               <div
                 key={alert.id}
-                className="flex items-start gap-4 p-3 rounded-lg border bg-card hover:bg-muted/50 transition-colors"
+                className="flex items-start gap-4 p-3 rounded-lg border bg-card hover:bg-muted/50 transition-colors animate-in fade-in-20"
               >
                 <div className="mt-1">{alertIcons[alert.level]}</div>
                 <div className="flex-1">
@@ -148,7 +171,7 @@ export function AlertsCenter({ isPage = false }: { isPage?: boolean }) {
         </CardContent>
       </Card>
 
-      {!isPage && (
+      {isPage && (
         <Card>
           <CardHeader>
             <div className="flex items-center gap-2">
