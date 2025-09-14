@@ -76,7 +76,7 @@ export function Header() {
 
       <nav className="flex-1 flex justify-center">
         <TooltipProvider>
-          <div className="flex items-center gap-2 rounded-full border bg-card/80 p-1.5">
+          <div className="flex items-center gap-1">
             {navLinks.map(({ href, label, icon: Icon }) => {
               const isActive =
                 (href !== '/' && pathname.startsWith(href)) ||
@@ -89,10 +89,10 @@ export function Header() {
                       variant="ghost"
                       size="icon"
                       className={cn(
-                        'rounded-full transition-all duration-300',
+                        'rounded-full transition-all duration-300 w-10 h-10',
                         isActive
-                          ? 'bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground'
-                          : 'hover:bg-muted'
+                          ? 'bg-primary/10 text-primary hover:bg-primary/20'
+                          : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground'
                       )}
                     >
                       <Link href={href}>
