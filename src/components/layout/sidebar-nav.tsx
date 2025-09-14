@@ -9,17 +9,17 @@ import {
 } from '@/components/ui/sidebar';
 import {
   LayoutDashboard,
-  FileQuestion,
   Bell,
   GraduationCap,
   Droplets,
   Calendar,
   Settings,
+  Sparkles,
 } from 'lucide-react';
 
 const mainNavItems = [
   { href: '/', label: 'Dashboard', icon: <LayoutDashboard /> },
-  { href: '/report', label: 'New Report', icon: <FileQuestion /> },
+  { href: '/report', label: 'AI Prediction', icon: <Sparkles /> },
   { href: '/alerts', label: 'Alerts', icon: <Bell /> },
   { href: '/education', label: 'Education', icon: <GraduationCap /> },
   { href: '/water-quality', label: 'Water Quality', icon: <Droplets /> },
