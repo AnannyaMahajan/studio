@@ -1,12 +1,23 @@
+'use client';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useToast } from "@/hooks/use-toast";
 import { Settings } from "lucide-react";
 
 export default function SettingsPage() {
+    const { toast } = useToast();
+
+    const handleSave = (section: string) => {
+        toast({
+            title: "Settings Saved",
+            description: `Your ${section} settings have been updated.`,
+        });
+    }
+
   return (
     <div className="flex flex-col gap-8 p-4 md:p-8">
         <header className="flex items-center gap-4">
@@ -36,7 +47,7 @@ export default function SettingsPage() {
                 </div>
             </CardContent>
             <CardFooter className="border-t px-6 py-4">
-                <Button>Save</Button>
+                <Button onClick={() => handleSave('profile')}>Save</Button>
             </CardFooter>
         </Card>
         <Card>
@@ -65,7 +76,7 @@ export default function SettingsPage() {
                 </div>
             </CardContent>
              <CardFooter className="border-t px-6 py-4">
-                <Button>Save</Button>
+                <Button onClick={() => handleSave('notification')}>Save</Button>
             </CardFooter>
         </Card>
          <Card>

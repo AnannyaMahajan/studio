@@ -1,3 +1,5 @@
+import type { RiskScoreAndExplainabilityOutput } from "@/ai/flows/generate-risk-score-and-explainability";
+
 export type Alert = {
   id: number;
   title: string;
@@ -12,4 +14,11 @@ export type Prediction = {
   summary: string;
   riskScore: 'High' | 'Medium' | 'Low';
   date: string;
+  details: RiskScoreAndExplainabilityOutput;
 };
+
+export type CalendarEvent = {
+    date: Date;
+    title: string;
+    time: string;
+}

@@ -16,7 +16,7 @@ export default function AlertsPage() {
         </div>
       </header>
       <div className="max-w-4xl mx-auto w-full">
-         <AlertsCenter />
+         <AlertsCenter isPage />
       </div>
     </div>
   );
