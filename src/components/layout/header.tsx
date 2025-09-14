@@ -1,3 +1,4 @@
+
 'use client';
 import {
   DropdownMenu,
@@ -94,7 +95,7 @@ export function Header() {
                           : 'hover:bg-muted'
                       )}
                     >
-                      <Link href={href}>
+                      <Link href="/login">
                         <Icon className="size-5" />
                         <span className="sr-only">{t(label)}</span>
                       </Link>
@@ -167,7 +168,7 @@ export function Header() {
           </DropdownMenu>
         ) : (
           <Button asChild>
-            <Link href="/login">{t('login.title')}</Link>
+            <Link href="/login">{t('auth.loginTitle')}</Link>
           </Button>
         )}
       </div>
