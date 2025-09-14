@@ -35,6 +35,7 @@ import {
 import { cn } from '@/lib/utils';
 import { useTranslation } from '@/hooks/use-translation';
 import { useAuth } from '@/hooks/use-auth';
+import { WaterDropIcon } from '../icons';
 
 const navLinks = [
   { href: '/', label: 'nav.dashboard', icon: LayoutDashboard },
@@ -62,6 +63,12 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-10 flex h-16 items-center border-b bg-background/80 px-4 backdrop-blur-sm sm:px-6">
+      <Link href="/" className="flex items-center gap-2 font-semibold">
+        <WaterDropIcon className="h-6 w-6 text-primary" />
+        <span className="font-headline text-lg font-bold tracking-tight">
+          {t('appName')}
+        </span>
+      </Link>
       <nav className="flex-1 flex justify-center">
         <TooltipProvider>
           <div className="flex items-center gap-1">

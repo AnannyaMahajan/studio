@@ -15,6 +15,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useTranslation } from '@/hooks/use-translation';
 import { findUserByEmail } from '@/lib/user-store';
 import type { FormEvent } from 'react';
+import { WaterDropIcon } from '../icons';
 
 export function ForgotPasswordForm() {
   const { t } = useTranslation();
@@ -44,6 +45,12 @@ export function ForgotPasswordForm() {
     <div className="flex items-center justify-center min-h-screen bg-muted/50">
       <Card className="mx-auto max-w-sm w-full">
         <CardHeader className="text-center">
+          <div className="flex justify-center items-center gap-2 mb-2">
+            <WaterDropIcon className="size-7 text-primary" />
+            <h1 className="font-headline text-2xl font-bold tracking-tight text-primary">
+              {t('appName')}
+            </h1>
+          </div>
           <CardTitle className="text-2xl font-bold">
             {t('auth.forgotPasswordTitle')}
           </CardTitle>
