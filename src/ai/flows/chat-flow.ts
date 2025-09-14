@@ -33,16 +33,16 @@ export async function chat(input: ChatInput): Promise<ChatOutput> {
 
 const chatPrompt = ai.definePrompt({
   name: 'chatPrompt',
-  input: {schema: ChatInputSchema},
+  input: {schema: z.any()}, // Allow any object, since we are transforming it
   output: {schema: ChatOutputSchema},
   prompt: `You are a helpful assistant for a Community Health Worker using the Swasthya Raksha app. Your primary goal is to answer questions about water-borne diseases, public health, and how to use the app. Keep your answers concise, clear, and easy to understand.
 
 {{#each history}}
-  {{#if (eq this.role 'user')}}
-    User: {{{this.content}}}
+  {{#if isUser}}
+    User: {{{content}}}
   {{/if}}
-  {{#if (eq this.role 'model')}}
-    AI: {{{this.content}}}
+  {{#if isModel}}
+    AI: {{{content}}}
   {{/if}}
 {{/each}}
 
@@ -57,9 +57,16 @@ const chatFlow = ai.defineFlow(
     outputSchema: ChatOutputSchema,
   },
   async (input) => {
+    // Transform history for Handlebars compatibility
+    const processedHistory = input.history.map(message => ({
+      content: message.content,
+      isUser: message.role === 'user',
+      isModel: message.role === 'model',
+    }));
+
     const {output} = await chatPrompt({
-      ...input,
-      history: input.history, // Pass history directly
+      history: processedHistory,
+      message: input.message,
     });
     return output!;
   }
