@@ -38,9 +38,10 @@ const chatPrompt = ai.definePrompt({
   prompt: `You are a helpful assistant for a Community Health Worker using the Swasthya Raksha app. Your primary goal is to answer questions about water-borne diseases, public health, and how to use the app. Keep your answers concise, clear, and easy to understand.
 
 {{#each history}}
-  {{#if (this.role === 'user')}}
+  {{#if (eq this.role 'user')}}
     User: {{{this.content}}}
-  {{else}}
+  {{/if}}
+  {{#if (eq this.role 'model')}}
     AI: {{{this.content}}}
   {{/if}}
 {{/each}}
