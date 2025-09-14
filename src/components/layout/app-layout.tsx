@@ -2,17 +2,23 @@
 import {
   SidebarProvider,
   Sidebar,
-  SidebarInset,
   SidebarHeader,
   SidebarContent,
   SidebarFooter,
-  SidebarTrigger,
 } from '@/components/ui/sidebar';
 import { Header } from '@/components/layout/header';
 import { SidebarNav } from './sidebar-nav';
 import { WaterDropIcon } from '../icons';
+import { usePathname } from 'next/navigation';
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+  const isAuthPage = pathname === '/login' || pathname === '/signup';
+
+  if (isAuthPage) {
+    return <>{children}</>;
+  }
+  
   return (
     <SidebarProvider>
       <Sidebar>
@@ -35,10 +41,10 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
           </div>
         </SidebarFooter>
       </Sidebar>
-      <SidebarInset>
+      <div className="flex flex-col flex-1">
         <Header />
-        <main>{children}</main>
-      </SidebarInset>
+        <main className="flex-1 overflow-y-auto">{children}</main>
+      </div>
     </SidebarProvider>
   );
 }
