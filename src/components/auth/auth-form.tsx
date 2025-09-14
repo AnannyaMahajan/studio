@@ -39,8 +39,8 @@ export function AuthForm({ mode }: AuthFormProps) {
     if (mode === 'signup') {
       if (findUserByEmail(email)) {
         toast({
-          title: 'User already exists',
-          description: 'Please log in instead.',
+          title: t('auth.userExistsTitle'),
+          description: t('auth.userExistsDescription'),
           variant: 'destructive',
         });
       } else {
@@ -55,14 +55,14 @@ export function AuthForm({ mode }: AuthFormProps) {
       const user = findUserByEmail(email);
       if (!user) {
         toast({
-          title: 'User not found',
-          description: 'Please sign up first to create an account.',
+          title: t('auth.userNotFoundTitle'),
+          description: t('auth.userNotFoundDescription'),
           variant: 'destructive',
         });
       } else if (user.password !== password) {
         toast({
-          title: 'Invalid credentials',
-          description: 'The password you entered is incorrect.',
+          title: t('auth.invalidCredentialsTitle'),
+          description: t('auth.invalidCredentialsDescription'),
           variant: 'destructive',
         });
       } else {
@@ -127,7 +127,7 @@ export function AuthForm({ mode }: AuthFormProps) {
                 <Label htmlFor="password">{t('auth.passwordLabel')}</Label>
                 {mode === 'login' && (
                   <Link
-                    href="#"
+                    href="/forgot-password"
                     className="ml-auto inline-block text-sm underline"
                   >
                     {t('auth.forgotPassword')}

@@ -357,6 +357,18 @@ const translations = {
         loginSuccessDescription: 'Welcome back!',
         signupSuccessTitle: 'Account Created',
         signupSuccessDescription: 'Your account has been successfully created.',
+        userExistsTitle: 'User already exists',
+        userExistsDescription: 'Please log in instead.',
+        userNotFoundTitle: 'User not found',
+        userNotFoundDescription: 'Please sign up first to create an account.',
+        invalidCredentialsTitle: 'Invalid credentials',
+        invalidCredentialsDescription: 'The password you entered is incorrect.',
+        forgotPasswordTitle: 'Forgot Password',
+        forgotPasswordDescription: 'Enter your email to receive a password reset link.',
+        sendResetLinkButton: 'Send Reset Link',
+        backToLogin: 'Back to login',
+        resetLinkSentTitle: 'Reset Link Sent',
+        resetLinkSentDescription: 'A password reset link has been sent to {{email}}.',
     }
   },
   hi: {
@@ -710,6 +722,18 @@ const translations = {
         loginSuccessDescription: 'वापसी पर स्वागत है!',
         signupSuccessTitle: 'खाता बनाया गया',
         signupSuccessDescription: 'आपका खाता सफलतापूर्वक बना दिया गया है।',
+        userExistsTitle: 'उपयोगकर्ता पहले से मौजूद है',
+        userExistsDescription: 'कृपया इसके बजाय लॉग इन करें।',
+        userNotFoundTitle: 'उपयोगकर्ता नहीं मिला',
+        userNotFoundDescription: 'खाता बनाने के लिए कृपया पहले साइन अप करें।',
+        invalidCredentialsTitle: 'अमान्य क्रेडेंशियल',
+        invalidCredentialsDescription: 'आपके द्वारा दर्ज किया गया पासवर्ड गलत है।',
+        forgotPasswordTitle: 'पासवर्ड भूल गए',
+        forgotPasswordDescription: 'पासवर्ड रीसेट लिंक प्राप्त करने के लिए अपना ईमेल दर्ज करें।',
+        sendResetLinkButton: 'रीसेट लिंक भेजें',
+        backToLogin: 'लॉगिन पर वापस जाएं',
+        resetLinkSentTitle: 'रीसेट लिंक भेजा गया',
+        resetLinkSentDescription: 'एक पासवर्ड रीसेट लिंक {{email}} पर भेजा गया है।',
     }
   },
   ho: {
@@ -835,7 +859,7 @@ export const TranslationProvider = ({ children }: { children: React.ReactNode })
     
     if (typeof result === 'string' && options) {
         Object.keys(options).forEach(optKey => {
-            result = result.replace(`{{${optKey}}}`, String(options[optKey]));
+            result = result.replace(new RegExp(`{{${optKey}}}`, 'g'), String(options[optKey]));
         });
     }
 
