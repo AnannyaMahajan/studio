@@ -1,4 +1,4 @@
-import type { Alert } from './types';
+import type { Alert, Prediction } from './types';
 
 export const alerts: Alert[] = [
   {
@@ -37,4 +37,28 @@ export const riskTimelineData = [
     { week: '3 weeks ago', riskScore: 40 },
     { week: '2 weeks ago', riskScore: 55 },
     { week: 'Last week', riskScore: 60 },
+];
+
+export const predictionHistory: Prediction[] = [
+  {
+    id: 1,
+    location: 'Sector 7 - Well',
+    summary: 'High turbidity and 5 cases of diarrhea reported.',
+    riskScore: 'High',
+    date: '2024-07-20',
+  },
+  {
+    id: 2,
+    location: 'North Village River',
+    summary: 'Slightly elevated bacterial indicators in water sample.',
+    riskScore: 'Medium',
+    date: '2024-07-19',
+  },
+    {
+    id: 3,
+    location: 'Community Pump',
+    summary: 'Routine check, all parameters normal.',
+    riskScore: 'Low',
+    date: '2024-07-18',
+  },
 ];

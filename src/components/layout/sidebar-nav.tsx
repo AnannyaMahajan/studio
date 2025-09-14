@@ -21,7 +21,7 @@ import {
 const mainNavItems = [
   { href: '/', label: 'Dashboard', icon: <LayoutDashboard /> },
   { href: '/report', label: 'New Report', icon: <FileQuestion /> },
-  { href: '/report', label: 'AI Prediction', icon: <Sparkles /> },
+  { href: '/ai-prediction', label: 'AI Prediction', icon: <Sparkles /> },
   { href: '/alerts', label: 'Alerts', icon: <Bell /> },
   { href: '/education', label: 'Education', icon: <GraduationCap /> },
   { href: '/water-quality', label: 'Water Quality', icon: <Droplets /> },
