@@ -1,5 +1,4 @@
 'use client';
-import { SidebarTrigger } from '@/components/ui/sidebar';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,14 +9,45 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Globe, LogOut, Settings, User } from 'lucide-react';
+import {
+  Globe,
+  LogOut,
+  Settings,
+  User,
+  LayoutDashboard,
+  FileQuestion,
+  BrainCircuit,
+  Droplets,
+  Bell,
+  Calendar,
+  GraduationCap,
+} from 'lucide-react';
 import Link from 'next/link';
 import { useToast } from '@/hooks/use-toast';
 import { useState } from 'react';
+import { WaterDropIcon } from '../icons';
+import { usePathname } from 'next/navigation';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
+import { cn } from '@/lib/utils';
+
+const navLinks = [
+  { href: '/', label: 'Dashboard', icon: LayoutDashboard },
+  { href: '/report', label: 'New Report', icon: FileQuestion },
+  { href: '/ai-prediction', label: 'AI Prediction', icon: BrainCircuit },
+  { href: '/water-quality', label: 'Water Quality', icon: Droplets },
+  { href: '/alerts', label: 'Alerts', icon: Bell },
+  { href: '/schedule', label: 'Schedule', icon: Calendar },
+  { href: '/education', label: 'Education', icon: GraduationCap },
+];
 
 export function Header() {
   const { toast } = useToast();
-  // Assume user is logged in for now. In a real app, this would come from an auth context.
+  const pathname = usePathname();
   const [isLoggedIn, setIsLoggedIn] = useState(true);
 
   const handleLogout = () => {
@@ -29,11 +59,53 @@ export function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-10 flex h-16 items-center justify-between border-b bg-background/80 px-4 backdrop-blur-sm sm:px-6">
-      <div className="md:hidden">
-        {isLoggedIn && <SidebarTrigger />}
+    <header className="sticky top-0 z-10 flex h-16 items-center border-b bg-background/80 px-4 backdrop-blur-sm sm:px-6">
+      <div className="flex items-center gap-2">
+        <Link href="/" className="flex items-center gap-2">
+          <div className="bg-primary text-primary-foreground p-2 rounded-lg">
+            <WaterDropIcon className="size-6" />
+          </div>
+          <h1 className="font-headline text-xl font-semibold hidden sm:block">
+            Swasthya Raksha
+          </h1>
+        </Link>
       </div>
-      <div className="flex-1" />
+
+      <nav className="flex-1 flex justify-center">
+        <TooltipProvider>
+          <div className="flex items-center gap-2 rounded-full border bg-card/80 p-1.5">
+            {navLinks.map(({ href, label, icon: Icon }) => {
+                const isActive = (pathname.startsWith(href) && href !== '/') || pathname === href;
+                return (
+                    <Tooltip key={href} delayDuration={0}>
+                        <TooltipTrigger asChild>
+                        <Button
+                            asChild
+                            variant="ghost"
+                            size="icon"
+                            className={cn(
+                            'rounded-full transition-all duration-300',
+                            isActive
+                                ? 'bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground'
+                                : 'hover:bg-muted'
+                            )}
+                        >
+                            <Link href={href}>
+                            <Icon className="size-5" />
+                            <span className="sr-only">{label}</span>
+                            </Link>
+                        </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                        <p>{label}</p>
+                        </TooltipContent>
+                    </Tooltip>
+                )
+            })}
+          </div>
+        </TooltipProvider>
+      </nav>
+
       <div className="flex items-center gap-4">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -54,7 +126,10 @@ export function Header() {
         {isLoggedIn ? (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+              <Button
+                variant="ghost"
+                className="relative h-8 w-8 rounded-full"
+              >
                 <Avatar className="h-8 w-8">
                   <AvatarImage
                     src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
