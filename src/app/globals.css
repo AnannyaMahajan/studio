@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -86,15 +87,7 @@
 
 @layer utilities {
   .animated-gradient {
-    background-image: radial-gradient(circle at top left, hsl(var(--primary) / 0.1), transparent 40%),
-                      radial-gradient(circle at bottom right, hsl(var(--accent) / 0.1), transparent 40%);
-    background-size: 200% 200%;
-    animation: gradient-flow 20s ease-in-out infinite;
-  }
-
-  @keyframes gradient-flow {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+    background-image: radial-gradient(circle at 1px 1px, hsl(var(--foreground) / 0.05) 1px, transparent 0);
+    background-size: 20px 20px;
   }
 }
