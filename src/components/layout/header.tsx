@@ -1,3 +1,4 @@
+'use client';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import {
   DropdownMenu,
@@ -10,8 +11,19 @@ import {
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Globe, LogOut, Settings, User } from 'lucide-react';
+import Link from 'next/link';
+import { useToast } from '@/hooks/use-toast';
 
 export function Header() {
+  const { toast } = useToast();
+
+  const handleLogout = () => {
+    toast({
+      title: 'Logged Out',
+      description: 'You have been successfully logged out.',
+    });
+  };
+
   return (
     <header className="sticky top-0 z-10 flex h-16 items-center justify-between border-b bg-background/80 px-4 backdrop-blur-sm sm:px-6">
       <div className="md:hidden">
@@ -30,7 +42,8 @@ export function Header() {
             <DropdownMenuLabel>Language</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem>English</DropdownMenuItem>
-            <DropdownMenuItem>Tribal Language (Placeholder)</DropdownMenuItem>
+            <DropdownMenuItem>Hindi</DropdownMenuItem>
+            <DropdownMenuItem>Ho (Tribal Language)</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
 
@@ -38,7 +51,10 @@ export function Header() {
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="relative h-8 w-8 rounded-full">
               <Avatar className="h-8 w-8">
-                <AvatarImage src="https://i.pravatar.cc/150?u=a042581f4e29026704d" alt="CHW" />
+                <AvatarImage
+                  src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
+                  alt="CHW"
+                />
                 <AvatarFallback>CHW</AvatarFallback>
               </Avatar>
             </Button>
@@ -46,16 +62,20 @@ export function Header() {
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <User className="mr-2 h-4 w-4" />
-              <span>Profile</span>
+            <DropdownMenuItem asChild>
+              <Link href="/settings">
+                <User className="mr-2 h-4 w-4" />
+                <span>Profile</span>
+              </Link>
             </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Settings className="mr-2 h-4 w-4" />
-              <span>Settings</span>
+            <DropdownMenuItem asChild>
+              <Link href="/settings">
+                <Settings className="mr-2 h-4 w-4" />
+                <span>Settings</span>
+              </Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={handleLogout}>
               <LogOut className="mr-2 h-4 w-4" />
               <span>Log out</span>
             </DropdownMenuItem>

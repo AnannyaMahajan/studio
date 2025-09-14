@@ -31,7 +31,7 @@ export default function SettingsPage() {
             </p>
             </div>
       </header>
-        <Card>
+        <Card id="profile">
             <CardHeader>
                 <CardTitle>Profile</CardTitle>
                 <CardDescription>Update your personal information.</CardDescription>
