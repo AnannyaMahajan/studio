@@ -43,6 +43,7 @@ const chatPrompt = ai.definePrompt({
     AI: {{{content}}}
   {{/if}}
 {{/each}}
+
 User: {{{message}}}
 AI: `,
 });
@@ -56,10 +57,7 @@ const chatFlow = ai.defineFlow(
   async (input) => {
     const {output} = await chatPrompt({
       ...input,
-      history: input.history.map((turn) => ({
-        role: turn.role,
-        content: turn.content,
-      })),
+      history: input.history, // Pass history directly
     });
     return output!;
   }

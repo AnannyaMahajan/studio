@@ -23,9 +23,16 @@ type Message = {
   content: string;
 };
 
+const initialMessages: Message[] = [
+    {
+        role: 'model',
+        content: "Hello! I am the Swasthya Raksha Assistant. How can I help you today? You can ask me about water-borne diseases, public health, or how to use this app."
+    }
+];
+
 export function Chatbot() {
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<Message[]>(initialMessages);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
@@ -57,6 +64,14 @@ export function Chatbot() {
       setIsLoading(false);
     }
   };
+  
+  const handleSheetOpenChange = (open: boolean) => {
+    setIsOpen(open);
+    if (open && messages.length === 0) {
+        setMessages(initialMessages);
+    }
+  }
+
 
   useEffect(() => {
     if (scrollAreaRef.current) {
@@ -78,7 +93,7 @@ export function Chatbot() {
         <span className="sr-only">Open Chatbot</span>
       </Button>
 
-      <Sheet open={isOpen} onOpenChange={setIsOpen}>
+      <Sheet open={isOpen} onOpenChange={handleSheetOpenChange}>
         <SheetContent className="flex flex-col">
           <SheetHeader>
             <SheetTitle>Swasthya Raksha Assistant</SheetTitle>
@@ -88,11 +103,6 @@ export function Chatbot() {
           </SheetHeader>
           <ScrollArea className="flex-1 my-4 pr-4" ref={scrollAreaRef}>
             <div className="space-y-4">
-              {messages.length === 0 && (
-                <div className="text-center text-sm text-muted-foreground p-4">
-                  No messages yet. Start the conversation!
-                </div>
-              )}
               {messages.map((message, index) => (
                 <div
                   key={index}
@@ -152,7 +162,7 @@ export function Chatbot() {
                 placeholder="Type your message..."
                 disabled={isLoading}
               />
-              <Button onClick={handleSend} disabled={isLoading}>
+              <Button onClick={handleSend} disabled={isLoading || !input.trim()}>
                 <Send className="h-4 w-4" />
                 <span className="sr-only">Send</span>
               </Button>
