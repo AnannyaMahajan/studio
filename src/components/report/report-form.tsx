@@ -74,7 +74,7 @@ export function ReportForm() {
           toast({ title: 'Location captured successfully.' });
         },
         (error) => {
-          console.error('Error getting location:', error);
+          console.error(`Error getting location: ${error.message}`);
           toast({
             title: 'Error getting location',
             description: 'Please ensure location services are enabled.',
