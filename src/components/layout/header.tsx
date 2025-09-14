@@ -25,7 +25,6 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { useToast } from '@/hooks/use-toast';
-import { WaterDropIcon } from '../icons';
 import { usePathname } from 'next/navigation';
 import {
   Tooltip,
@@ -63,17 +62,6 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-10 flex h-16 items-center border-b bg-background/80 px-4 backdrop-blur-sm sm:px-6">
-      <div className="flex items-center gap-2">
-        <Link href="/" className="flex items-center gap-2">
-          <div className="bg-primary text-primary-foreground p-2 rounded-lg">
-            <WaterDropIcon className="size-6" />
-          </div>
-          <h1 className="font-headline text-xl font-semibold hidden sm:block">
-            {t('appName')}
-          </h1>
-        </Link>
-      </div>
-
       <nav className="flex-1 flex justify-center">
         <TooltipProvider>
           <div className="flex items-center gap-1">
