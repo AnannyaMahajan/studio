@@ -34,27 +34,29 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
+import { useTranslation } from '@/hooks/use-translation';
 
 const navLinks = [
-  { href: '/', label: 'Dashboard', icon: LayoutDashboard },
-  { href: '/report', label: 'New Report', icon: FileQuestion },
-  { href: '/ai-prediction', label: 'AI Prediction', icon: BrainCircuit },
-  { href: '/water-quality', label: 'Water Quality', icon: Droplets },
-  { href: '/alerts', label: 'Alerts', icon: Bell },
-  { href: '/schedule', label: 'Schedule', icon: Calendar },
-  { href: '/education', label: 'Education', icon: GraduationCap },
+  { href: '/', label: 'nav.dashboard', icon: LayoutDashboard },
+  { href: '/report', label: 'nav.newReport', icon: FileQuestion },
+  { href: '/ai-prediction', label: 'nav.aiPrediction', icon: BrainCircuit },
+  { href: '/water-quality', label: 'nav.waterQuality', icon: Droplets },
+  { href: '/alerts', label: 'nav.alerts', icon: Bell },
+  { href: '/schedule', label: 'nav.schedule', icon: Calendar },
+  { href: '/education', label: 'nav.education', icon: GraduationCap },
 ];
 
 export function Header() {
   const { toast } = useToast();
   const pathname = usePathname();
   const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const { t, setLanguage } = useTranslation();
 
   const handleLogout = () => {
     setIsLoggedIn(false);
     toast({
-      title: 'Logged Out',
-      description: 'You have been successfully logged out.',
+      title: t('logout.title'),
+      description: t('logout.description'),
     });
   };
 
@@ -66,7 +68,7 @@ export function Header() {
             <WaterDropIcon className="size-6" />
           </div>
           <h1 className="font-headline text-xl font-semibold hidden sm:block">
-            Swasthya Raksha
+            {t('appName')}
           </h1>
         </Link>
       </div>
@@ -75,32 +77,34 @@ export function Header() {
         <TooltipProvider>
           <div className="flex items-center gap-2 rounded-full border bg-card/80 p-1.5">
             {navLinks.map(({ href, label, icon: Icon }) => {
-                const isActive = (pathname.startsWith(href) && href !== '/') || pathname === href;
-                return (
-                    <Tooltip key={href} delayDuration={0}>
-                        <TooltipTrigger asChild>
-                        <Button
-                            asChild
-                            variant="ghost"
-                            size="icon"
-                            className={cn(
-                            'rounded-full transition-all duration-300',
-                            isActive
-                                ? 'bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground'
-                                : 'hover:bg-muted'
-                            )}
-                        >
-                            <Link href={href}>
-                            <Icon className="size-5" />
-                            <span className="sr-only">{label}</span>
-                            </Link>
-                        </Button>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                        <p>{label}</p>
-                        </TooltipContent>
-                    </Tooltip>
-                )
+              const isActive =
+                (pathname.startsWith(href) && href !== '/') ||
+                pathname === href;
+              return (
+                <Tooltip key={href} delayDuration={0}>
+                  <TooltipTrigger asChild>
+                    <Button
+                      asChild
+                      variant="ghost"
+                      size="icon"
+                      className={cn(
+                        'rounded-full transition-all duration-300',
+                        isActive
+                          ? 'bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground'
+                          : 'hover:bg-muted'
+                      )}
+                    >
+                      <Link href={href}>
+                        <Icon className="size-5" />
+                        <span className="sr-only">{t(label)}</span>
+                      </Link>
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{t(label)}</p>
+                  </TooltipContent>
+                </Tooltip>
+              );
             })}
           </div>
         </TooltipProvider>
@@ -111,15 +115,15 @@ export function Header() {
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" size="icon">
               <Globe className="h-5 w-5" />
-              <span className="sr-only">Change language</span>
+              <span className="sr-only">{t('changeLanguage')}</span>
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Language</DropdownMenuLabel>
+            <DropdownMenuLabel>{t('language')}</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>English</DropdownMenuItem>
-            <DropdownMenuItem>Hindi</DropdownMenuItem>
-            <DropdownMenuItem>Ho (Tribal Language)</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setLanguage('en')}>English</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setLanguage('hi')}>Hindi</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setLanguage('ho')}>Ho (Tribal Language)</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
 
@@ -140,30 +144,30 @@ export function Header() {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuLabel>{t('account.myAccount')}</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem asChild>
                 <Link href="/settings">
                   <User className="mr-2 h-4 w-4" />
-                  <span>Profile</span>
+                  <span>{t('account.profile')}</span>
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link href="/settings">
                   <Settings className="mr-2 h-4 w-4" />
-                  <span>Settings</span>
+                  <span>{t('account.settings')}</span>
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={handleLogout}>
                 <LogOut className="mr-2 h-4 w-4" />
-                <span>Log out</span>
+                <span>{t('account.logout')}</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         ) : (
           <Button asChild>
-            <Link href="/login">Login</Link>
+            <Link href="/login">{t('login.title')}</Link>
           </Button>
         )}
       </div>

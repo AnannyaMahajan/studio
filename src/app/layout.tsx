@@ -3,6 +3,7 @@ import './globals.css';
 import { cn } from '@/lib/utils';
 import { Toaster } from '@/components/ui/toaster';
 import { AppLayout } from '@/components/layout/app-layout';
+import { TranslationProvider } from '@/hooks/use-translation';
 
 export const metadata: Metadata = {
   title: 'Swasthya Raksha',
@@ -14,7 +15,6 @@ export const viewport: Viewport = {
   themeColor: '#3b82f6',
 };
 
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -24,12 +24,21 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+          rel="stylesheet"
+        />
       </head>
       <body className={cn('font-body antialiased')}>
-            <AppLayout>{children}</AppLayout>
-            <Toaster />
+        <TranslationProvider>
+          <AppLayout>{children}</AppLayout>
+          <Toaster />
+        </TranslationProvider>
       </body>
     </html>
   );

@@ -15,6 +15,7 @@ import {
   type ChartConfig,
 } from '@/components/ui/chart';
 import { riskTimelineData } from '@/lib/placeholder-data';
+import { useTranslation } from '@/hooks/use-translation';
 
 const chartConfig = {
   riskScore: {
@@ -24,22 +25,30 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 export function RiskTimeline() {
+  const { t } = useTranslation();
+  
+  const translatedData = riskTimelineData.map((item, index) => ({
+    ...item,
+    week: t(`riskTimeline.weeks.${index}`)
+  }));
+
+
   return (
     <Card>
       <CardHeader>
         <div className="flex items-center gap-2">
           <TrendingUp className="size-5" />
-          <CardTitle>Risk Timeline</CardTitle>
+          <CardTitle>{t('riskTimeline.title')}</CardTitle>
         </div>
         <CardDescription>
-          Aggregated outbreak risk score over the last 12 weeks.
+          {t('riskTimeline.description')}
         </CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig} className="h-[200px] w-full">
           <AreaChart
             accessibilityLayer
-            data={riskTimelineData}
+            data={translatedData}
             margin={{
               left: 12,
               right: 12,
