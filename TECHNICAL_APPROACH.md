@@ -45,7 +45,41 @@ The application is designed to be deployed on modern, serverless cloud infrastru
 - **Hosting:** The application is configured for deployment on **Firebase App Hosting**. App Hosting provides a fully managed, serverless environment with features like automatic scaling, global CDN, and integrated security. The configuration is defined in `apphosting.yaml`.
 - **CI/CD:** While not explicitly implemented in the code, the setup is ready for a CI/CD pipeline (e.g., GitHub Actions) that would build the Next.js application and deploy it to Firebase App Hosting on every push to the main branch.
 
-## 6. Add-ons & Future Enhancements
+## 6. Research & Development Workflow Diagram
+
+This diagram illustrates the iterative process of research, best practice implementation, and feasibility assessment used in the development of this application.
+
+```mermaid
+graph TD
+    A[Identify CHW Need <br> e.g., Offline data entry] --> B{Research Best Practices};
+    B --> C[Performance Benchmarking <br> Next.js Server Components vs. others];
+    B --> D[Offline Solutions <br> PWA vs. Native];
+    B --> E[UI/UX Standards <br> Accessibility & Consistency];
+
+    subgraph "Feasibility & Technology Selection"
+        C --> F[Select: Next.js App Router];
+        D --> G[Select: PWA with Service Workers];
+        E --> H[Select: ShadCN UI & Tailwind];
+    end
+
+    subgraph "Implementation Cycle"
+        I[Design System Architecture <br> Frontend, Backend, AI Flows] --> J[Implement Feature <br> e.g., Report Form];
+        J --> K[Test for Feasibility & Usability <br> Works offline, easy to use];
+        K --> L[Deploy on Scalable Infrastructure <br> Firebase App Hosting];
+        L --> M{Gather User Feedback};
+        M --> A;
+    end
+
+    F --> I;
+    G --> I;
+    H --> I;
+
+    style A fill:#e3f2fd,stroke:#333,stroke-width:2px
+    style M fill:#e3f2fd,stroke:#333,stroke-width:2px
+    style B fill:#fff9c4,stroke:#333,stroke-width:2px
+```
+
+## 7. Add-ons & Future Enhancements
 
 The current architecture is extensible and can support a wide range of future enhancements.
 
