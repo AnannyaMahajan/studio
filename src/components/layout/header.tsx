@@ -14,13 +14,11 @@ import { Globe, LogOut, Settings, User } from 'lucide-react';
 import Link from 'next/link';
 import { useToast } from '@/hooks/use-toast';
 import { useState } from 'react';
-import { useTranslation } from '@/hooks/use-translation';
 
 export function Header() {
   const { toast } = useToast();
   // Assume user is logged in for now. In a real app, this would come from an auth context.
   const [isLoggedIn, setIsLoggedIn] = useState(true);
-  const { setLanguage, t } = useTranslation();
 
   const handleLogout = () => {
     setIsLoggedIn(false);
@@ -45,11 +43,11 @@ export function Header() {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuLabel>{t('language')}</DropdownMenuLabel>
+            <DropdownMenuLabel>Language</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onSelect={() => setLanguage('en')}>English</DropdownMenuItem>
-            <DropdownMenuItem onSelect={() => setLanguage('hi')}>Hindi</DropdownMenuItem>
-            <DropdownMenuItem onSelect={() => setLanguage('ho')}>Ho (Tribal Language)</DropdownMenuItem>
+            <DropdownMenuItem>English</DropdownMenuItem>
+            <DropdownMenuItem>Hindi</DropdownMenuItem>
+            <DropdownMenuItem>Ho (Tribal Language)</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
 
