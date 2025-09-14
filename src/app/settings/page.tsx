@@ -80,8 +80,8 @@ export default function SettingsPage() {
                     </SelectTrigger>
                     <SelectContent>
                         <SelectItem value="en">English</SelectItem>
-                        <SelectItem value="hi">Hindi (Placeholder)</SelectItem>
-                         <SelectItem value="ho">Tribal Language (Placeholder)</SelectItem>
+                        <SelectItem value="hi">Hindi</SelectItem>
+                         <SelectItem value="ho">Ho (Tribal Language)</SelectItem>
                     </SelectContent>
                 </Select>
             </CardContent>
