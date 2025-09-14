@@ -95,7 +95,7 @@ export function Header() {
                           : 'hover:bg-muted'
                       )}
                     >
-                      <Link href="/login">
+                      <Link href={href}>
                         <Icon className="size-5" />
                         <span className="sr-only">{t(label)}</span>
                       </Link>
