@@ -1,9 +1,11 @@
+
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import { cn } from '@/lib/utils';
 import { Toaster } from '@/components/ui/toaster';
 import { AppLayout } from '@/components/layout/app-layout';
 import { TranslationProvider } from '@/hooks/use-translation';
+import { AuthProvider } from '@/hooks/use-auth';
 
 export const metadata: Metadata = {
   title: 'Swasthya Raksha',
@@ -35,10 +37,12 @@ export default function RootLayout({
         />
       </head>
       <body className={cn('font-body antialiased')}>
-        <TranslationProvider>
-          <AppLayout>{children}</AppLayout>
-          <Toaster />
-        </TranslationProvider>
+        <AuthProvider>
+          <TranslationProvider>
+            <AppLayout>{children}</AppLayout>
+            <Toaster />
+          </TranslationProvider>
+        </AuthProvider>
       </body>
     </html>
   );

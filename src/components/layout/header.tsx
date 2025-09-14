@@ -25,7 +25,6 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { useToast } from '@/hooks/use-toast';
-import { useState } from 'react';
 import { WaterDropIcon } from '../icons';
 import { usePathname } from 'next/navigation';
 import {
@@ -36,6 +35,7 @@ import {
 } from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
 import { useTranslation } from '@/hooks/use-translation';
+import { useAuth } from '@/hooks/use-auth';
 
 const navLinks = [
   { href: '/', label: 'nav.dashboard', icon: LayoutDashboard },
@@ -50,11 +50,11 @@ const navLinks = [
 export function Header() {
   const { toast } = useToast();
   const pathname = usePathname();
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const { user, logout } = useAuth();
   const { t, setLanguage } = useTranslation();
 
   const handleLogout = () => {
-    setIsLoggedIn(false);
+    logout();
     toast({
       title: t('logout.title'),
       description: t('logout.description'),
@@ -79,7 +79,7 @@ export function Header() {
           <div className="flex items-center gap-2 rounded-full border bg-card/80 p-1.5">
             {navLinks.map(({ href, label, icon: Icon }) => {
               const isActive =
-                (pathname.startsWith(href) && href !== '/') ||
+                (href !== '/' && pathname.startsWith(href)) ||
                 pathname === href;
               return (
                 <Tooltip key={href} delayDuration={0}>
@@ -122,13 +122,19 @@ export function Header() {
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>{t('language')}</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => setLanguage('en')}>English</DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setLanguage('hi')}>Hindi</DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setLanguage('ho')}>Ho (Tribal Language)</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setLanguage('en')}>
+              English
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setLanguage('hi')}>
+              Hindi
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setLanguage('ho')}>
+              Ho (Tribal Language)
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
 
-        {isLoggedIn ? (
+        {user ? (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
@@ -138,9 +144,11 @@ export function Header() {
                 <Avatar className="h-8 w-8">
                   <AvatarImage
                     src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
-                    alt="CHW"
+                    alt={user.name}
                   />
-                  <AvatarFallback>CHW</AvatarFallback>
+                  <AvatarFallback>
+                    {user.name.charAt(0).toUpperCase()}
+                  </AvatarFallback>
                 </Avatar>
               </Button>
             </DropdownMenuTrigger>
