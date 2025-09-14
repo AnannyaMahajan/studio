@@ -1,0 +1,174 @@
+
+'use client';
+import { useState, useRef, useEffect } from 'react';
+import { Button } from '@/components/ui/button';
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetDescription,
+  SheetFooter,
+} from '@/components/ui/sheet';
+import { Input } from '@/components/ui/input';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Bot, Loader2, Send, User, X } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { chat } from '@/ai/flows/chat-flow';
+import ReactMarkdown from 'react-markdown';
+
+type Message = {
+  role: 'user' | 'model';
+  content: string;
+};
+
+export function Chatbot() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [input, setInput] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
+
+  const handleSend = async () => {
+    if (!input.trim()) return;
+
+    const userMessage: Message = { role: 'user', content: input };
+    setMessages((prev) => [...prev, userMessage]);
+    setInput('');
+    setIsLoading(true);
+
+    try {
+      const chatHistory = messages.map(msg => ({ role: msg.role, content: msg.content }));
+      const result = await chat({ history: chatHistory, message: input });
+      
+      if (result) {
+        const modelMessage: Message = { role: 'model', content: result.response };
+        setMessages((prev) => [...prev, modelMessage]);
+      }
+    } catch (error) {
+      console.error('Chatbot error:', error);
+      const errorMessage: Message = {
+        role: 'model',
+        content: 'Sorry, I encountered an error. Please try again.',
+      };
+      setMessages((prev) => [...prev, errorMessage]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (scrollAreaRef.current) {
+        const scrollContainer = scrollAreaRef.current.querySelector('div');
+        if (scrollContainer) {
+            scrollContainer.scrollTop = scrollContainer.scrollHeight;
+        }
+    }
+  }, [messages]);
+
+  return (
+    <>
+      <Button
+        onClick={() => setIsOpen(true)}
+        className="fixed bottom-6 right-6 h-16 w-16 rounded-full shadow-lg"
+        size="icon"
+      >
+        <Bot className="h-8 w-8" />
+        <span className="sr-only">Open Chatbot</span>
+      </Button>
+
+      <Sheet open={isOpen} onOpenChange={setIsOpen}>
+        <SheetContent className="flex flex-col">
+          <SheetHeader>
+            <SheetTitle>Swasthya Raksha Assistant</SheetTitle>
+            <SheetDescription>
+              Ask me questions about water-borne diseases or the app.
+            </SheetDescription>
+          </SheetHeader>
+          <ScrollArea className="flex-1 my-4 pr-4" ref={scrollAreaRef}>
+            <div className="space-y-4">
+              {messages.length === 0 && (
+                <div className="text-center text-sm text-muted-foreground p-4">
+                  No messages yet. Start the conversation!
+                </div>
+              )}
+              {messages.map((message, index) => (
+                <div
+                  key={index}
+                  className={cn(
+                    'flex items-start gap-3',
+                    message.role === 'user' ? 'justify-end' : 'justify-start'
+                  )}
+                >
+                  {message.role === 'model' && (
+                    <Avatar className="h-8 w-8">
+                      <AvatarFallback>
+                        <Bot className="h-5 w-5" />
+                      </AvatarFallback>
+                    </Avatar>
+                  )}
+                  <div
+                    className={cn(
+                      'max-w-xs rounded-lg p-3 text-sm',
+                      message.role === 'user'
+                        ? 'bg-primary text-primary-foreground'
+                        : 'bg-muted'
+                    )}
+                  >
+                    <ReactMarkdown className="prose prose-sm dark:prose-invert">
+                        {message.content}
+                    </ReactMarkdown>
+                  </div>
+                   {message.role === 'user' && (
+                    <Avatar className="h-8 w-8">
+                      <AvatarFallback>
+                        <User className="h-5 w-5" />
+                      </AvatarFallback>
+                    </Avatar>
+                  )}
+                </div>
+              ))}
+               {isLoading && (
+                 <div className="flex items-start gap-3 justify-start">
+                    <Avatar className="h-8 w-8">
+                      <AvatarFallback>
+                        <Bot className="h-5 w-5" />
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="bg-muted rounded-lg p-3 flex items-center">
+                        <Loader2 className="h-5 w-5 animate-spin text-muted-foreground"/>
+                    </div>
+                 </div>
+                )}
+            </div>
+          </ScrollArea>
+          <SheetFooter>
+            <div className="flex w-full items-center gap-2">
+              <Input
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && handleSend()}
+                placeholder="Type your message..."
+                disabled={isLoading}
+              />
+              <Button onClick={handleSend} disabled={isLoading}>
+                <Send className="h-4 w-4" />
+                <span className="sr-only">Send</span>
+              </Button>
+            </div>
+          </SheetFooter>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setIsOpen(false)}
+            className="absolute top-3 right-3 rounded-full h-8 w-8"
+          >
+            <X className="h-4 w-4" />
+            <span className="sr-only">Close</span>
+          </Button>
+        </SheetContent>
+      </Sheet>
+    </>
+  );
+}

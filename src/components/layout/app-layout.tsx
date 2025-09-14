@@ -2,6 +2,7 @@
 'use client';
 import { usePathname } from 'next/navigation';
 import { Header } from './header';
+import { Chatbot } from '../chatbot/chatbot';
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -20,6 +21,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
       <main className="flex-1 p-4 md:p-8 animate-in fade-in-50 duration-500">
         {children}
       </main>
+      <Chatbot />
     </div>
   );
 }
