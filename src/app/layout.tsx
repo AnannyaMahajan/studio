@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   description: 'Community Health Worker Reporting and Outbreak Prediction',
   manifest: '/manifest.json',
   icons: {
-    icon: '/favicon.ico',
+    icon: '/favicon.svg',
   },
 };
 
