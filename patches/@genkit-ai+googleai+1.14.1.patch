@@ -1,0 +1,24 @@
+diff --git a/node_modules/@genkit-ai/googleai/lib/index.js b/node_modules/@genkit-ai/googleai/lib/index.js
+index f3a00508a8e3fb9dfd38a83d31b01cd2a3921160..e69ce4e397e584501ddb8b29c9b9101d2efb4fc2 100644
+--- a/node_modules/@genkit-ai/googleai/lib/index.js
++++ b/node_modules/@genkit-ai/googleai/lib/index.js
+@@ -107,6 +107,7 @@ function googleAI(config) {
+     const plugin = (0, genkit_1.definePlugin)({
+         name: 'googleai',
+         async onEnable() {
++            (0, gcloud_1.enableProjectServices)(['generativelanguage.googleapis.com']);
+             if (config?.apiKey) {
+                 (0, logger_1.log)('info', 'Google AI plugin configured with API key.');
+             }
+diff --git a/node_modules/@genkit-ai/googleai/package.json b/node_modules/@genkit-ai/googleai/package.json
+index 3254d39e24021dd9d4949bd51a37cce1b4bb11ef..42c6ac2c488347f7d98348bfe4df41f234fa3cc7 100644
+--- a/node_modules/@genkit-ai/googleai/package.json
++++ b/node_modules/@genkit-ai/googleai/package.json
+@@ -51,6 +51,7 @@
+     "ts-essentials": "^9.4.1"
+   },
+   "dependencies": {
++    "@genkit-ai/google-cloud": "workspace:^",
+     "google-auth-library": "^9.9.0"
+   },
+   "peerDependencies": {
