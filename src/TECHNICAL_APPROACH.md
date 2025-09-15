@@ -52,13 +52,13 @@ This diagram illustrates the actual data flow in the currently implemented appli
 ```mermaid
 graph TD
     subgraph "User Device (PWA)"
-        A[CHW enters data in Report Form]
+        A["CHW enters data in Report Form"] --> B
     end
 
     subgraph "Next.js Server"
-        B[Server Action Receives Data]
-        C[Genkit Flow Processes Data]
-        D[Calls Google AI API <br> (Gemini Model)]
+        B["Server Action Receives Data"] --> C{"Genkit Flow Processes Data"}
+        C --> D["Calls Google AI API <br> (Gemini Model)"]
+        D --> E
     end
     
     subgraph "Google Cloud"
@@ -66,15 +66,9 @@ graph TD
     end
 
     subgraph "User Device (PWA)"
-        E[UI Displays AI-Generated <br> Risk Score & Action Plan]
+        E["UI Displays AI-Generated <br> Risk Score & Action Plan"]
     end
 
-    A --> B;
-    B --> C;
-    C --> D;
-    D --> C;
-    C --> B;
-    B --> E;
 
     style A fill:#e3f2fd,stroke:#333,stroke-width:2px
     style E fill:#e3f2fd,stroke:#333,stroke-width:2px
